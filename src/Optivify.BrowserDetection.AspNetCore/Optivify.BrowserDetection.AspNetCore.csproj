@@ -7,6 +7,10 @@
 		<RepositoryUrl>https://github.com/Optivify/BrowserDetection</RepositoryUrl>
 		<PackageProjectUrl>https://github.com/Optivify/BrowserDetection</PackageProjectUrl>
 		<Description>The browser and device detector for ASP.Net Core.</Description>
+		<Company>Optivify</Company>
+		<Authors>Optivify</Authors>
+		<PackAsTool>False</PackAsTool>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	</PropertyGroup>
 
 	<ItemGroup>
