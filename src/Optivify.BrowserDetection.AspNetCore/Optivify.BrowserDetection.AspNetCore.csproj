@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net6.0</TargetFrameworks>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<RepositoryType></RepositoryType>
+		<RepositoryUrl>https://github.com/Optivify/BrowserDetection</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/Optivify/BrowserDetection</PackageProjectUrl>
+		<Description>The browser and device detector for ASP.Net Core.</Description>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.2.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Optivify.BrowserDetection\Optivify.BrowserDetection.csproj" />
+	</ItemGroup>
+
+</Project>

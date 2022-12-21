@@ -1,0 +1,329 @@
+﻿using Optivify.BrowserDetection.ClientHints;
+using Optivify.BrowserDetection.ClientHints.Devices;
+using Optivify.BrowserDetection.ClientHints.Engines;
+using Optivify.BrowserDetection.ClientHints.Browsers;
+using Optivify.BrowserDetection.DeviceArchitectures;
+using Optivify.BrowserDetection.DeviceArchitectures.Detectors;
+using Optivify.BrowserDetection.DeviceOperatingSystems;
+using Optivify.BrowserDetection.DeviceOperatingSystems.Detectors;
+using Optivify.BrowserDetection.DeviceTypes;
+using Optivify.BrowserDetection.DeviceTypes.Detectors;
+using Optivify.BrowserDetection.Engines;
+using Optivify.BrowserDetection.Engines.Detectors;
+using Optivify.BrowserDetection.Platforms;
+using Optivify.BrowserDetection.Platforms.Detectors;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using Optivify.BrowserDetection.UserAgents;
+using Optivify.BrowserDetection.Browsers;
+using Optivify.BrowserDetection.Browsers.Detectors;
+
+namespace Optivify.BrowserDetection.Services
+{
+    public class DetectionService : IDetectionService
+    {
+        private static readonly Regex PlatformRegex = new Regex(@"\(([^()]*)\)", RegexOptions.Compiled);
+
+        private readonly IClientHintsEngineDetector clientHintsEngineDetector;
+
+        private readonly IClientHintsBrowserDetector clientHintsBrowserDetector;
+
+        private readonly IClientHintsDeviceDetector clientHintsDeviceDetector;
+
+        public BrowserDetectionOptions BrowserDetectionOptions { get; protected set; }
+
+        public IClientHintsResolver ClientHintsResolver { get; }
+
+        public IUserAgentResolver UserAgentResolver { get; }
+
+        #region Client Hints Device Pixel Ratio
+
+        public double? DevicePixelRatio => this.ClientHintsResolver.DevicePixelRatio;
+
+        #endregion
+
+        #region Client Hints Model
+
+        public string Model => this.ClientHintsResolver.UserAgentModel;
+
+        #endregion
+
+        #region Client Hints Viewport Width
+
+        public int? ViewportWidth => this.ClientHintsResolver.ViewportWidth;
+
+        #endregion
+
+        #region Engine
+
+        private readonly IEnumerable<IEngineDetector> engineDetectors;
+
+        private readonly Lazy<IEngine> engine;
+
+        public IEngine Engine => this.engine.Value;
+
+        #endregion
+
+        #region Browser
+
+        private readonly IEnumerable<IBrowserDetector> browserDetectors;
+
+        private readonly Lazy<IBrowser> browser;
+
+        public IBrowser Browser => this.browser.Value;
+
+        #endregion
+
+        #region Platform
+
+        private readonly IEnumerable<IPlatformDetector> platformDetectors;
+
+        private readonly Lazy<IPlatform> platform;
+
+        public IPlatform Platform => platform.Value;
+
+        #endregion
+
+        #region Device
+
+        private readonly IEnumerable<IDeviceTypeDetector> deviceDetectors;
+
+        private readonly Lazy<IDeviceType> device;
+
+        public IDeviceType Device => device.Value;
+
+        #endregion
+
+        #region Operating System
+
+        private readonly IEnumerable<IDeviceOperatingSystemDetector> operatingSystemDetectors;
+
+        private readonly Lazy<IDeviceOperatingSystem> operatingSystem;
+
+        public IDeviceOperatingSystem OperatingSystem => operatingSystem.Value;
+
+        #endregion
+
+        #region Architecture
+
+        private readonly IEnumerable<IDeviceArchitectureDetector> architectureDetectors;
+
+        private readonly Lazy<IDeviceArchitecture> architecture;
+
+        public IDeviceArchitecture Architecture => architecture.Value;
+
+        #endregion
+
+        public DetectionService(
+            BrowserDetectionOptions options,
+
+            IClientHintsResolver clientHintsResolver,
+
+            IClientHintsEngineDetector clientHintsEngineDetector,
+            IClientHintsBrowserDetector clientHintsBrowserDetector,
+            IClientHintsDeviceDetector clientHintsDeviceDetector,
+
+            IUserAgentResolver userAgentResolver,
+
+            IEnumerable<IEngineDetector> engineDetectors,
+            IEnumerable<IBrowserDetector> browserDetectors,
+            IEnumerable<IPlatformDetector> platformDetectors,
+            IEnumerable<IDeviceTypeDetector> deviceDetectors,
+            IEnumerable<IDeviceOperatingSystemDetector> operatingSystemDetectors,
+            IEnumerable<IDeviceArchitectureDetector> architectureDetectors
+        )
+        {
+            this.BrowserDetectionOptions = options;
+
+            this.ClientHintsResolver = clientHintsResolver;
+            this.clientHintsEngineDetector = clientHintsEngineDetector;
+            this.clientHintsBrowserDetector = clientHintsBrowserDetector;
+            this.clientHintsDeviceDetector = clientHintsDeviceDetector;
+
+            this.UserAgentResolver = userAgentResolver;
+
+            this.engineDetectors = engineDetectors;
+            this.engine = new Lazy<IEngine>(() => { return GetEngine(); });
+
+            this.browserDetectors = browserDetectors;
+            this.browser = new Lazy<IBrowser>(() => { return GetBrowser(); });
+
+            this.platformDetectors = platformDetectors;
+            this.platform = new Lazy<IPlatform>(() => { return GetPlatform(); });
+
+            this.deviceDetectors = deviceDetectors;
+            this.device = new Lazy<IDeviceType>(() => { return GetDevice(); });
+
+            this.operatingSystemDetectors = operatingSystemDetectors;
+            this.operatingSystem = new Lazy<IDeviceOperatingSystem>(() => { return GetOperatingSystem(); });
+
+            this.architectureDetectors = architectureDetectors;
+            this.architecture = new Lazy<IDeviceArchitecture>(() => { return GetArchitecture(); });
+        }
+
+        /// <summary>
+        /// Use this method to set the browser detection options manually.
+        /// </summary>
+        /// <param name="browserDetectionOptions">The custom browser detection options.</param>
+        public void SetBrowserDetectionOptions(BrowserDetectionOptions browserDetectionOptions)
+        {
+            this.BrowserDetectionOptions = browserDetectionOptions;
+        }
+
+        protected virtual string GetPlatformString(string userAgent)
+        {
+            var matches = PlatformRegex.Matches(userAgent);
+
+            if (matches.Count > 0)
+            {
+                var match = matches[0];
+
+                if (match.Groups.Count > 1)
+                {
+                    return match.Groups[1].Value;
+                }
+            }
+
+            return string.Empty;
+        }
+
+        protected virtual IEngine GetEngine()
+        {
+            if (!this.BrowserDetectionOptions.SkipClientHintsDetection)
+            {
+                var useUserAgentFullVersionList = this.BrowserDetectionOptions.AcceptClientHints.AcceptUserAgentFullVersionList &&
+                                           !string.IsNullOrEmpty(this.ClientHintsResolver.UserAgentFullVersionList);
+                var clientHintsUserAgent = useUserAgentFullVersionList ?
+                                           this.ClientHintsResolver.UserAgentFullVersionList :
+                                           this.ClientHintsResolver.UserAgent;
+
+                if (!string.IsNullOrEmpty(clientHintsUserAgent))
+                {
+                    var engine = this.clientHintsEngineDetector.GetEngine(clientHintsUserAgent);
+
+                    if (engine != null)
+                    {
+                        return engine;
+                    }
+                }
+            }
+
+            foreach (var engineDetector in this.engineDetectors.OrderBy(x => x.Order))
+            {
+                if (engineDetector.TryParse(this.Browser, this.OperatingSystem, this.UserAgentResolver.UserAgent, out var engine) && engine != null)
+                {
+                    return engine;
+                }
+            }
+
+            return new Engine(EngineNames.Others, new Version());
+        }
+
+        protected virtual IBrowser GetBrowser()
+        {
+            if (!this.BrowserDetectionOptions.SkipClientHintsDetection &&
+                !string.IsNullOrEmpty(this.ClientHintsResolver.UserAgentFullVersionList))
+            {
+                var browser = this.clientHintsBrowserDetector.GetBrowser(this.ClientHintsResolver.UserAgentFullVersionList);
+
+                if (browser != null)
+                {
+                    return browser;
+                }
+            }
+
+            foreach (var browserDetector in this.browserDetectors.OrderBy(x => x.Order))
+            {
+                if (browserDetector.TryParse(this.UserAgentResolver.UserAgent, out var browser) && browser != null)
+                {
+                    return browser;
+                }
+            }
+
+            return new Browser(BrowserNames.Others, new Version());
+        }
+
+        protected virtual IPlatform GetPlatform()
+        {
+            var platformString = this.GetPlatformString(this.UserAgentResolver.UserAgent);
+
+            foreach (var platformDetector in this.platformDetectors.OrderBy(x => x.Order))
+            {
+                if (platformDetector.TryParse(platformString, out var platform) && platform != null)
+                {
+                    return platform;
+                }
+            }
+
+            return new Platform(platformString, PlatformNames.Others);
+        }
+
+        protected virtual IDeviceType GetDevice()
+        {
+            if (!this.BrowserDetectionOptions.SkipClientHintsDetection)
+            {
+                if (!string.IsNullOrEmpty(this.ClientHintsResolver.UserAgentMobile))
+                {
+                    var device = this.clientHintsDeviceDetector.GetDevice(this.ClientHintsResolver.UserAgentMobile);
+
+                    if (device != null)
+                    {
+                        return device;
+                    }
+                }
+            }
+
+            var platform = this.Platform;
+
+            foreach (var deviceDetector in this.deviceDetectors.OrderBy(x => x.Order))
+            {
+                if (deviceDetector.TryParse(platform, this.UserAgentResolver.UserAgent, out var device) && device != null)
+                {
+                    return device;
+                }
+            }
+
+            return new DeviceType(DeviceTypeNames.Others);
+        }
+
+        protected virtual IDeviceOperatingSystem GetOperatingSystem()
+        {
+            if (this.ClientHintsResolver.UserAgentPlatform != null)
+            {
+                var userAgentPlatform = this.ClientHintsResolver.UserAgentPlatform.Trim('"');
+                var version = this.ClientHintsResolver.UserAgentPlatformVersion == null ? new Version() : this.ClientHintsResolver.UserAgentPlatformVersion;
+
+                return new DeviceOperatingSystem(userAgentPlatform, version);
+            }
+
+            var platform = this.Platform;
+
+            foreach (var operatingSystemDetector in this.operatingSystemDetectors.OrderBy(x => x.Order))
+            {
+                if (operatingSystemDetector.TryParse(platform, this.UserAgentResolver.UserAgent, out var operatingSystem) && operatingSystem != null)
+                {
+                    return operatingSystem;
+                }
+            }
+
+            return new DeviceOperatingSystem(DeviceOperatingSystemNames.Others, new Version());
+        }
+
+        protected virtual IDeviceArchitecture GetArchitecture()
+        {
+            var platform = this.Platform;
+
+            foreach (var architectureDetector in this.architectureDetectors.OrderBy(x => x.Order))
+            {
+                if (architectureDetector.TryParse(this.UserAgentResolver.UserAgent, out var architecture) && architecture != null)
+                {
+                    return architecture;
+                }
+            }
+
+            return new DeviceArchitecture(DeviceArchitectureNames.Others);
+        }
+    }
+}
