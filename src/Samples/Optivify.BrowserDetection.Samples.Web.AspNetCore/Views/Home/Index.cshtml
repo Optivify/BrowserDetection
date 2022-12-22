@@ -14,7 +14,7 @@
 <form asp-controller="Home" asp-action="Index" method="post" class="mb-4">
     <div class="row">
         <div class="col-12">
-            <textarea name="userAgent" placeholder="Enter the user agent that you want to test..." class="form-control mb-2"></textarea>
+            <textarea name="userAgent" placeholder="Enter the user agent that you want to test..." class="form-control mb-2">@Model.UserAgent</textarea>
         </div>
         <div class="col-12">
             <button type="submit" class="btn btn-primary">Submit</button>

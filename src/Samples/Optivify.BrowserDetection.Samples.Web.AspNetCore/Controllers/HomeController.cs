@@ -11,16 +11,12 @@ namespace Optivify.BrowserDetection.Samples.Web.AspNetCore.Controllers
 
         private readonly BrowserDetectionOptions browserDetectionOptions;
 
-        private readonly IDetectionService detectionService;
-
         public HomeController(
             ILogger<HomeController> logger, 
-            BrowserDetectionOptions browserDetectionOptions,
-            IDetectionService detectionService)
+            BrowserDetectionOptions browserDetectionOptions)
         {
             this.logger = logger;
             this.browserDetectionOptions = browserDetectionOptions;
-            this.detectionService = detectionService;
         }
 
         public IActionResult Index()
@@ -42,7 +38,8 @@ namespace Optivify.BrowserDetection.Samples.Web.AspNetCore.Controllers
         [HttpPost]
         public IActionResult Index(string userAgent)
         {
-            Request.Headers["User-Agent"] = userAgent;
+            base.Request.Headers["User-Agent"] = userAgent;
+            var detectionService = base.HttpContext.RequestServices.GetRequiredService<IDetectionService>();
 
             var customBrowserDetectionOptions = new BrowserDetectionOptions
             {
@@ -51,7 +48,7 @@ namespace Optivify.BrowserDetection.Samples.Web.AspNetCore.Controllers
                 CriticalClientHints = this.browserDetectionOptions.CriticalClientHints
             };
 
-            this.detectionService.SetBrowserDetectionOptions(customBrowserDetectionOptions);
+            detectionService.SetBrowserDetectionOptions(customBrowserDetectionOptions);
 
             var model = new HomeViewModel
             {
