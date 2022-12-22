@@ -9,6 +9,8 @@
 		<RepositoryUrl>https://github.com/Optivify/BrowserDetection</RepositoryUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<Authors>Optivify</Authors>
+		<AssemblyVersion>1.0.1</AssemblyVersion>
+		<Version>$(AssemblyVersion)</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
