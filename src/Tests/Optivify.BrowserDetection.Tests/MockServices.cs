@@ -117,11 +117,14 @@ namespace Optivify.BrowserDetection.Tests
 
             return new DetectionService(
                 new BrowserDetectionOptions(),
-                clientHintsUserAgentResolver, 
-                clientHintsEngineDetector, 
-                clientHintsBrowserDetector, 
+
+                clientHintsEngineDetector,
+                clientHintsBrowserDetector,
                 clientHintsDeviceDetector,
+
+                clientHintsUserAgentResolver,
                 userAgentResolver,
+
                 engineDetectors, 
                 browserDetectors, 
                 platformDetectors, 

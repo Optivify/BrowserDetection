@@ -34,25 +34,43 @@ namespace Optivify.BrowserDetection.Services
 
         public BrowserDetectionOptions BrowserDetectionOptions { get; protected set; }
 
-        public IClientHintsResolver ClientHintsResolver { get; }
+        #region Client Hints Resolver
 
-        public IUserAgentResolver UserAgentResolver { get; }
+        public Lazy<IClientHintsResolver> clientHintsResolver;
+
+        public IClientHintsResolver ClientHintsResolver => this.clientHintsResolver.Value;
+
+        #endregion
+
+        #region User Agent Resolver
+
+        public Lazy<IUserAgentResolver> userAgentResolver;
+
+        public IUserAgentResolver UserAgentResolver => this.userAgentResolver.Value;
+
+        #endregion
 
         #region Client Hints Device Pixel Ratio
 
-        public double? DevicePixelRatio => this.ClientHintsResolver.DevicePixelRatio;
+        public Lazy<double?> devicePixelRatio;
+
+        public double? DevicePixelRatio => this.devicePixelRatio.Value;
 
         #endregion
 
         #region Client Hints Model
 
-        public string Model => this.ClientHintsResolver.UserAgentModel;
+        public Lazy<string> model;
+
+        public string Model => this.model.Value;
 
         #endregion
 
         #region Client Hints Viewport Width
 
-        public int? ViewportWidth => this.ClientHintsResolver.ViewportWidth;
+        public Lazy<int?> viewportWidth;
+
+        public int? ViewportWidth => this.viewportWidth.Value;
 
         #endregion
 
@@ -119,12 +137,11 @@ namespace Optivify.BrowserDetection.Services
         public DetectionService(
             BrowserDetectionOptions options,
 
-            IClientHintsResolver clientHintsResolver,
-
             IClientHintsEngineDetector clientHintsEngineDetector,
             IClientHintsBrowserDetector clientHintsBrowserDetector,
             IClientHintsDeviceDetector clientHintsDeviceDetector,
 
+            IClientHintsResolver clientHintsResolver,
             IUserAgentResolver userAgentResolver,
 
             IEnumerable<IEngineDetector> engineDetectors,
@@ -137,30 +154,34 @@ namespace Optivify.BrowserDetection.Services
         {
             this.BrowserDetectionOptions = options;
 
-            this.ClientHintsResolver = clientHintsResolver;
             this.clientHintsEngineDetector = clientHintsEngineDetector;
             this.clientHintsBrowserDetector = clientHintsBrowserDetector;
             this.clientHintsDeviceDetector = clientHintsDeviceDetector;
 
-            this.UserAgentResolver = userAgentResolver;
+            this.clientHintsResolver = new Lazy<IClientHintsResolver>(() => { return clientHintsResolver; });
+            this.userAgentResolver = new Lazy<IUserAgentResolver>(() => { return userAgentResolver; });
 
             this.engineDetectors = engineDetectors;
-            this.engine = new Lazy<IEngine>(() => { return GetEngine(); });
+            this.engine = new Lazy<IEngine>(() => { return this.GetEngine(); });
 
             this.browserDetectors = browserDetectors;
-            this.browser = new Lazy<IBrowser>(() => { return GetBrowser(); });
+            this.browser = new Lazy<IBrowser>(() => { return this.GetBrowser(); });
 
             this.platformDetectors = platformDetectors;
-            this.platform = new Lazy<IPlatform>(() => { return GetPlatform(); });
+            this.platform = new Lazy<IPlatform>(() => { return this.GetPlatform(); });
 
             this.deviceDetectors = deviceDetectors;
-            this.device = new Lazy<IDeviceType>(() => { return GetDevice(); });
+            this.device = new Lazy<IDeviceType>(() => { return this.GetDevice(); });
 
             this.operatingSystemDetectors = operatingSystemDetectors;
             this.operatingSystem = new Lazy<IDeviceOperatingSystem>(() => { return GetOperatingSystem(); });
 
             this.architectureDetectors = architectureDetectors;
             this.architecture = new Lazy<IDeviceArchitecture>(() => { return GetArchitecture(); });
+
+            this.devicePixelRatio = new Lazy<double?>(() => { return this.ClientHintsResolver.DevicePixelRatio; });
+            this.model = new Lazy<string>(() => { return this.ClientHintsResolver.UserAgentModel; });
+            this.viewportWidth = new Lazy<int?>(() => { return this.ClientHintsResolver.ViewportWidth; });
         }
 
         /// <summary>
@@ -191,17 +212,12 @@ namespace Optivify.BrowserDetection.Services
 
         protected virtual IEngine GetEngine()
         {
-            if (!this.BrowserDetectionOptions.SkipClientHintsDetection)
+            if (!this.BrowserDetectionOptions.SkipClientHintsDetection &&
+                !string.IsNullOrEmpty(this.ClientHintsResolver.UserAgentFullVersionList))
             {
-                var useUserAgentFullVersionList = this.BrowserDetectionOptions.AcceptClientHints.AcceptUserAgentFullVersionList &&
-                                           !string.IsNullOrEmpty(this.ClientHintsResolver.UserAgentFullVersionList);
-                var clientHintsUserAgent = useUserAgentFullVersionList ?
-                                           this.ClientHintsResolver.UserAgentFullVersionList :
-                                           this.ClientHintsResolver.UserAgent;
-
-                if (!string.IsNullOrEmpty(clientHintsUserAgent))
+                if (!string.IsNullOrEmpty(this.ClientHintsResolver.UserAgentFullVersionList))
                 {
-                    var engine = this.clientHintsEngineDetector.GetEngine(clientHintsUserAgent);
+                    var engine = this.clientHintsEngineDetector.GetEngine(this.ClientHintsResolver.UserAgentFullVersionList);
 
                     if (engine != null)
                     {
