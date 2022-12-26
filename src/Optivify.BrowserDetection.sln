@@ -15,6 +15,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Optivify.BrowserDetection.T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Optivify.BrowserDetection.Samples.Web.AspNetCore", "Samples\Optivify.BrowserDetection.Samples.Web.AspNetCore\Optivify.BrowserDetection.Samples.Web.AspNetCore.csproj", "{3107F1EA-D45A-45A7-9D4C-95F9530C6EAE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Benchmarks", "Benchmarks", "{0A140A04-BD88-4C5F-95E5-82BB92A6E62F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Optivify.BrowserDetection.Benchmark", "Benchmarks\Optivify.BrowserDetection.Benchmark\Optivify.BrowserDetection.Benchmark.csproj", "{C7E098FC-4F2C-42EE-AF7A-8279589D2D6E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +41,10 @@ Global
 		{3107F1EA-D45A-45A7-9D4C-95F9530C6EAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3107F1EA-D45A-45A7-9D4C-95F9530C6EAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3107F1EA-D45A-45A7-9D4C-95F9530C6EAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7E098FC-4F2C-42EE-AF7A-8279589D2D6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7E098FC-4F2C-42EE-AF7A-8279589D2D6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7E098FC-4F2C-42EE-AF7A-8279589D2D6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7E098FC-4F2C-42EE-AF7A-8279589D2D6E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -44,6 +52,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{3A8605B0-538B-4855-BE78-D11A0340685B} = {7BE6DE8D-EF01-4D18-A82C-AC708EADE30B}
 		{3107F1EA-D45A-45A7-9D4C-95F9530C6EAE} = {54E64655-A528-4310-BD41-9FE3934DDA32}
+		{C7E098FC-4F2C-42EE-AF7A-8279589D2D6E} = {0A140A04-BD88-4C5F-95E5-82BB92A6E62F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {68B40747-DE2C-4F02-B54D-FC7B42F4E686}
