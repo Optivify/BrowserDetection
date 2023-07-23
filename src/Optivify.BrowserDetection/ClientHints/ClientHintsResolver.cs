@@ -31,6 +31,8 @@ namespace Optivify.BrowserDetection.ClientHints
         double? DevicePixelRatio { get; }
 
         int? ViewportWidth { get; }
+
+        int? ViewportHeight { get; }
     }
 
     public class ClientHintsResolver : IClientHintsResolver
@@ -125,7 +127,15 @@ namespace Optivify.BrowserDetection.ClientHints
 
         public int? ViewportWidth => this.viewportWidth.Value;
 
-        #endregion
+		#endregion
+
+		#region Viewport Height
+
+		private readonly Lazy<int?> viewportHeight;
+
+		public int? ViewportHeight => this.viewportHeight.Value;
+
+		#endregion
 
         protected ClientHintsResolver()
         {
@@ -140,7 +150,8 @@ namespace Optivify.BrowserDetection.ClientHints
             this.userAgentPlatform = new Lazy<string>(() => { return this.GetPlatform(); });
             this.userAgentPlatformVersion = new Lazy<Version>(() => { return this.GetPlatformVersion(); });
             this.viewportWidth = new Lazy<int?>(() => { return this.GetViewportWidth(); });
-        }
+            this.viewportHeight = new Lazy<int?>(() => { return this.GetViewportHeight(); });
+		}
 
         public ClientHintsResolver(IDictionary<string, string> headers) : this()
         {
@@ -316,23 +327,43 @@ namespace Optivify.BrowserDetection.ClientHints
 
         private int? GetViewportWidth()
         {
+	        var width = GetIntValue(RequestHeaderNames.ViewportWidth);
+	        if (width != null)
+	        {
+		        return width;
+	        }
+            return null;
+        }
+
+        private int? GetViewportHeight()
+        {
+            var height = GetIntValue(RequestHeaderNames.ViewportHeight);
+            if (height != null)
+            {
+                return height;
+            }
+            return null;
+        }
+
+        private int? GetIntValue(string name)
+        {
             if (this.headerDictionary != null)
             {
-                if (int.TryParse(this.headerDictionary[RequestHeaderNames.UserAgentPlatform].FirstOrDefault(), out var viewportWidth))
+                if (int.TryParse(this.headerDictionary[name].FirstOrDefault(), out var intValue))
                 {
-                    return viewportWidth;
+                    return intValue;
                 }
             }
 
-            if (this.headers != null && this.headers.TryGetValue(RequestHeaderNames.ViewportWidth, out var value))
-            {
-                if (int.TryParse(value, out var viewportWidth))
-                {
-                    return viewportWidth;
-                }
-            }
+	        if (this.headers != null && this.headers.TryGetValue(name, out var value))
+	        {
+		        if (int.TryParse(value, out var intValue))
+		        {
+			        return intValue;
+		        }
+	        }
 
-            return null;
+	        return null;
         }
     }
 }

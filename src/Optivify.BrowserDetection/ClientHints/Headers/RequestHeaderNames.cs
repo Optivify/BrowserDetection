@@ -24,11 +24,13 @@
 
         public const string UserAgentModel = "Sec-CH-UA-Model";
 
-        public const string DevicePixelRatio = "DPR";
+        public const string DevicePixelRatio = "Sec-CH-DPR";
 
         public const string PlatformVersion = "Sec-CH-UA-Platform-Version";
 
-        public const string ViewportWidth = "Viewport-Width";
+        public const string ViewportWidth = "Sec-CH-Viewport-Width";
+
+        public const string ViewportHeight = "Sec-CH-Viewport-Height";
 
         public const string Width = "Width";
 

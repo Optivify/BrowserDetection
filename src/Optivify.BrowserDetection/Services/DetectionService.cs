@@ -72,7 +72,15 @@ namespace Optivify.BrowserDetection.Services
 
         public int? ViewportWidth => this.viewportWidth.Value;
 
-        #endregion
+		#endregion
+
+		#region Client Hints Viewport Height
+
+		public Lazy<int?> viewportHeight;
+
+		public int? ViewportHeight => this.viewportHeight.Value;
+
+		#endregion
 
         #region Engine
 
@@ -182,7 +190,8 @@ namespace Optivify.BrowserDetection.Services
             this.devicePixelRatio = new Lazy<double?>(() => { return this.ClientHintsResolver.DevicePixelRatio; });
             this.model = new Lazy<string>(() => { return this.ClientHintsResolver.UserAgentModel; });
             this.viewportWidth = new Lazy<int?>(() => { return this.ClientHintsResolver.ViewportWidth; });
-        }
+            this.viewportHeight = new Lazy<int?>(() => { return this.ClientHintsResolver.ViewportHeight; });
+		}
 
         /// <summary>
         /// Use this method to set the browser detection options manually.

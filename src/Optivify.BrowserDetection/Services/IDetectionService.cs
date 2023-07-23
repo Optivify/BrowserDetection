@@ -33,6 +33,8 @@ namespace Optivify.BrowserDetection.Services
 
         int? ViewportWidth { get; }
 
+        int? ViewportHeight { get; }
+
         BrowserDetectionOptions BrowserDetectionOptions { get; }
 
         void SetBrowserDetectionOptions(BrowserDetectionOptions browserDetectionOptions);
