@@ -19,10 +19,15 @@ namespace Optivify.BrowserDetection.AspNetCore.DependencyInjection
             var section = configuration.GetSection(BrowserDetectionOptions.ConfigurationSectionName);
             var options = section.Get<BrowserDetectionOptions>();
 
-            services.AddSingleton(options);
-
             // Configure IOptions
             services.Configure<BrowserDetectionOptions>(section);
+
+            return AddBrowserDetection(services, options);
+        }
+
+        public static IDetectionBuilder AddBrowserDetection(this IServiceCollection services, BrowserDetectionOptions options)
+        {
+            services.AddSingleton(options);
 
             var builder = new DetectionBuilder(services);
 

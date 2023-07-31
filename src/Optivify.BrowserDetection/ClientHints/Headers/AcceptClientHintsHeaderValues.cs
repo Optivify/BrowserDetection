@@ -18,6 +18,8 @@
 
         public const string ViewportWidth = RequestHeaderNames.ViewportWidth;
 
+        public const string ViewportHeight = RequestHeaderNames.ViewportHeight;
+
         public const string Width = RequestHeaderNames.Width;
     }
 }

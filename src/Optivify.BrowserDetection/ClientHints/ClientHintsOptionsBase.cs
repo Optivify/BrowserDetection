@@ -21,6 +21,8 @@ namespace Optivify.BrowserDetection.ClientHints
 
         public bool AcceptViewportWidth { get; set; }
 
+        public bool AcceptViewportHeight { get; set; }
+
         public bool AcceptWidth { get; set; }
 
         public override string ToString()
@@ -65,6 +67,11 @@ namespace Optivify.BrowserDetection.ClientHints
             if (this.AcceptViewportWidth)
             {
                 sb.Append(AcceptClientHintsHeaderValues.ViewportWidth).Append(", ");
+			}
+
+            if (this.AcceptViewportHeight)
+            {
+                sb.Append(AcceptClientHintsHeaderValues.ViewportHeight).Append(", ");
             }
 
             if (this.AcceptWidth)
