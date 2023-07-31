@@ -11,7 +11,7 @@
 		<Authors>Optivify</Authors>
 		<PackAsTool>False</PackAsTool>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<AssemblyVersion>1.0.0</AssemblyVersion>
+		<AssemblyVersion>1.0.1</AssemblyVersion>
 		<Version>$(AssemblyVersion)</Version>
 		<PackageTags>browser device platform engine detection detector</PackageTags>
 	</PropertyGroup>

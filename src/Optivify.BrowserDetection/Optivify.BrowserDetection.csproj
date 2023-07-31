@@ -9,7 +9,7 @@
 		<RepositoryUrl>https://github.com/Optivify/BrowserDetection</RepositoryUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<Authors>Optivify</Authors>
-		<AssemblyVersion>1.0.1</AssemblyVersion>
+		<AssemblyVersion>1.0.2</AssemblyVersion>
 		<Version>$(AssemblyVersion)</Version>
 		<PackageTags>browser device platform engine detection detector</PackageTags>
 	</PropertyGroup>
