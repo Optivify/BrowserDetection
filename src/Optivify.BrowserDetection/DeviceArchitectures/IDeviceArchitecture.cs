@@ -1,7 +1,6 @@
-﻿namespace Optivify.BrowserDetection.DeviceArchitectures
+﻿namespace Optivify.BrowserDetection.DeviceArchitectures;
+
+public interface IDeviceArchitecture
 {
-    public interface IDeviceArchitecture
-    {
-        string Name { get; }
-    }
+    string Name { get; }
 }

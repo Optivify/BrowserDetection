@@ -1,7 +1,6 @@
-﻿namespace Optivify.BrowserDetection.ClientHints
+﻿namespace Optivify.BrowserDetection.ClientHints;
+
+public static class ClientHintsStrings
 {
-    public static class ClientHintsStrings
-    {
-        public const string NotABrand = "Not?A_Brand";
-    }
+    public const string NotABrand = "Not?A_Brand";
 }

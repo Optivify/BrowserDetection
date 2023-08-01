@@ -1,6 +1,5 @@
-﻿namespace Optivify.BrowserDetection.ClientHints
+﻿namespace Optivify.BrowserDetection.ClientHints;
+
+public class AcceptClientHintsOptions : AcceptClientHintsOptionsBase
 {
-    public class AcceptClientHintsOptions : AcceptClientHintsOptionsBase
-    {
-    }
 }

@@ -1,13 +1,12 @@
 ﻿using Optivify.BrowserDetection.Platforms;
 
-namespace Optivify.BrowserDetection.DeviceTypes.Detectors
+namespace Optivify.BrowserDetection.DeviceTypes.Detectors;
+
+public interface IDeviceTypeDetector
 {
-    public interface IDeviceTypeDetector
-    {
-        int Order { get; }
+    int Order { get; }
 
-        string DeviceType { get; }
+    string DeviceType { get; }
 
-        bool TryParse(IPlatform platform, string userAgent, out IDeviceType device);
-    }
+    bool TryParse(IPlatform platform, string? userAgent, out IDeviceType? device);
 }

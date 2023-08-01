@@ -1,7 +1,6 @@
-﻿namespace Optivify.BrowserDetection.UserAgents
+﻿namespace Optivify.BrowserDetection.UserAgents;
+
+public interface IUserAgentResolver
 {
-    public interface IUserAgentResolver
-    {
-        string UserAgent { get; }
-    }
+    string? UserAgent { get; }
 }

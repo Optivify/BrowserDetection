@@ -1,53 +1,51 @@
 ﻿using Optivify.BrowserDetection.ClientHints.Helpers;
-using Optivify.BrowserDetection.Helpers;
 using Optivify.BrowserDetection.Engines;
-using System;
+using Optivify.BrowserDetection.Helpers;
 
-namespace Optivify.BrowserDetection.ClientHints.Engines
+namespace Optivify.BrowserDetection.ClientHints.Engines;
+
+public interface IClientHintsEngineDetector
 {
-    public interface IClientHintsEngineDetector
-    {
-        IEngine GetEngine(string clientHintsUserAgent);
-    }
+    IEngine? GetEngine(string clientHintsUserAgent);
+}
 
-    public class ClientHintsEngineDetector : IClientHintsEngineDetector
+public class ClientHintsEngineDetector : IClientHintsEngineDetector
+{
+    public IEngine? GetEngine(string clientHintsUserAgent)
     {
-        public IEngine GetEngine(string clientHintsUserAgent)
+        if (string.IsNullOrEmpty(clientHintsUserAgent))
         {
-            if (string.IsNullOrEmpty(clientHintsUserAgent))
+            return null;
+        }
+
+        var parts = clientHintsUserAgent.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+        if (parts.Length > 1)
+        {
+            // Engine name and version
+            var engineParts = parts[1].Split(';');
+
+            if (engineParts.Length > 1)
             {
-                return null;
-            }
+                var engineName = ClientHintsHelpers.GetClientHintsValueFromString(engineParts[0]);
+                var versionString = VersionHelpers.GetClientHintsVersionString(engineParts[1].Trim());
 
-            var parts = clientHintsUserAgent.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-
-            if (parts.Length > 1)
-            {
-                // Engine name and version
-                var engineParts = parts[1].Split(';');
-
-                if (engineParts.Length > 1)
+                if (!string.IsNullOrEmpty(engineName))
                 {
-                    var engineName = ClientHintsHelpers.GetClientHintsValueFromString(engineParts[0]);
-                    var versionString = VersionHelpers.GetClientHintsVersionString(engineParts[1].Trim());
+                    engineName = ClientHintsHelpers.GetEngineName(engineName) ?? engineName;
 
-                    if (!string.IsNullOrEmpty(engineName))
+                    if (VersionHelpers.TryParseSafe(versionString, out var version) && version != null)
                     {
-                        engineName = ClientHintsHelpers.GetEngineName(engineName) ?? engineName;
-
-                        if (VersionHelpers.TryParseSafe(versionString, out var version) && version != null)
-                        {
-                            return new Engine(engineName, version);
-                        }
-                        else
-                        {
-                            return new Engine(engineName, new Version());
-                        }
+                        return new Engine(engineName, version);
+                    }
+                    else
+                    {
+                        return new Engine(engineName, new Version());
                     }
                 }
             }
-
-            return null;
         }
+
+        return null;
     }
 }

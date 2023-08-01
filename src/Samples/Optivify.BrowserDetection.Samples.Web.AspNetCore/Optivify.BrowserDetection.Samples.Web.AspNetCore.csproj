@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Optivify.BrowserDetection.AspNetCore\Optivify.BrowserDetection.AspNetCore.csproj" />
     <ProjectReference Include="..\..\Optivify.BrowserDetection\Optivify.BrowserDetection.csproj" />
   </ItemGroup>
 

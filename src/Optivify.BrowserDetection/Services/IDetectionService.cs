@@ -1,42 +1,41 @@
 ﻿using Optivify.BrowserDetection.Browsers;
 using Optivify.BrowserDetection.ClientHints;
-using Optivify.BrowserDetection.UserAgents;
 using Optivify.BrowserDetection.DeviceArchitectures;
 using Optivify.BrowserDetection.DeviceOperatingSystems;
 using Optivify.BrowserDetection.DeviceTypes;
 using Optivify.BrowserDetection.Engines;
 using Optivify.BrowserDetection.Platforms;
+using Optivify.BrowserDetection.UserAgents;
 
-namespace Optivify.BrowserDetection.Services
+namespace Optivify.BrowserDetection.Services;
+
+public interface IDetectionService
 {
-    public interface IDetectionService
-    {
-        IClientHintsResolver ClientHintsResolver { get; }
+    IClientHintsResolver ClientHintsResolver { get; }
 
-        IUserAgentResolver UserAgentResolver { get; }
+    IUserAgentResolver UserAgentResolver { get; }
 
-        IEngine Engine { get; }
+    IEngine Engine { get; }
 
-        IBrowser Browser { get; }
+    IBrowser Browser { get; }
 
-        IPlatform Platform { get; }
+    IPlatform Platform { get; }
 
-        IDeviceType Device { get; }
-        
-        IDeviceOperatingSystem OperatingSystem { get; }
+    IDeviceType Device { get; }
 
-        IDeviceArchitecture Architecture { get; }
+    IDeviceOperatingSystem OperatingSystem { get; }
 
-        double? DevicePixelRatio { get; }
+    IDeviceArchitecture Architecture { get; }
 
-        string Model { get; }
+    double? DevicePixelRatio { get; }
 
-        int? ViewportWidth { get; }
+    string Model { get; }
 
-        int? ViewportHeight { get; }
+    int? ViewportWidth { get; }
 
-        BrowserDetectionOptions BrowserDetectionOptions { get; }
+    int? ViewportHeight { get; }
 
-        void SetBrowserDetectionOptions(BrowserDetectionOptions browserDetectionOptions);
-    }
+    BrowserDetectionOptions BrowserDetectionOptions { get; }
+
+    void SetBrowserDetectionOptions(BrowserDetectionOptions browserDetectionOptions);
 }

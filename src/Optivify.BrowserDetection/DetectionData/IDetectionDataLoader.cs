@@ -1,7 +1,6 @@
-﻿namespace Optivify.BrowserDetection.DetectionData
+﻿namespace Optivify.BrowserDetection.DetectionData;
+
+public interface IDetectionDataLoader
 {
-    public interface IDetectionDataLoader
-    {
-        DetectionDataModel GetDetectionData();
-    }
+    DetectionDataModel GetDetectionData();
 }

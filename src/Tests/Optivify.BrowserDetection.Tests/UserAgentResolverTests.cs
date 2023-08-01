@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Moq;
-using Optivify.BrowserDetection.AspNetCore.UserAgents;
+using Optivify.BrowserDetection.UserAgents;
 
 namespace Optivify.BrowserDetection.Tests
 {

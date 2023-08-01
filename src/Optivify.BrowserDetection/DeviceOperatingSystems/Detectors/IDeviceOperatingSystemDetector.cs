@@ -1,13 +1,12 @@
 ﻿using Optivify.BrowserDetection.Platforms;
 
-namespace Optivify.BrowserDetection.DeviceOperatingSystems.Detectors
+namespace Optivify.BrowserDetection.DeviceOperatingSystems.Detectors;
+
+public interface IDeviceOperatingSystemDetector
 {
-    public interface IDeviceOperatingSystemDetector
-    {
-        int Order { get; }
+    int Order { get; }
 
-        string OperatingSystemName { get; }
+    string OperatingSystemName { get; }
 
-        bool TryParse(IPlatform platform, string userAgent, out IDeviceOperatingSystem operatingSystem);
-    }
+    bool TryParse(IPlatform platform, string? userAgent, out IDeviceOperatingSystem? operatingSystem);
 }

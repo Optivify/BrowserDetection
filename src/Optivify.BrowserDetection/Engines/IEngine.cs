@@ -1,11 +1,8 @@
-﻿using System;
+﻿namespace Optivify.BrowserDetection.Engines;
 
-namespace Optivify.BrowserDetection.Engines
+public interface IEngine
 {
-    public interface IEngine
-    {
-        string Name { get; }
+    string Name { get; }
 
-        Version Version { get; }
-    }
+    Version Version { get; }
 }

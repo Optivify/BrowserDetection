@@ -1,11 +1,8 @@
-﻿using System;
+﻿namespace Optivify.BrowserDetection.DeviceOperatingSystems;
 
-namespace Optivify.BrowserDetection.DeviceOperatingSystems
+public interface IDeviceOperatingSystem
 {
-    public interface IDeviceOperatingSystem
-    {
-        string Name { get; }
+    string Name { get; }
 
-        Version Version { get; }
-    }
+    Version Version { get; }
 }

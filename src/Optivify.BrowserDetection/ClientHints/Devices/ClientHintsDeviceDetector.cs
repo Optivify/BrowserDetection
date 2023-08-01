@@ -1,29 +1,28 @@
 ﻿using Optivify.BrowserDetection.DeviceTypes;
 
-namespace Optivify.BrowserDetection.ClientHints.Devices
+namespace Optivify.BrowserDetection.ClientHints.Devices;
+
+public interface IClientHintsDeviceDetector
 {
-    public interface IClientHintsDeviceDetector
-    {
-        IDeviceType GetDevice(string userAgentMobile);
-    }
+    IDeviceType? GetDevice(string userAgentMobile);
+}
 
-    public class ClientHintsDeviceDetector : IClientHintsDeviceDetector
+public class ClientHintsDeviceDetector : IClientHintsDeviceDetector
+{
+    public IDeviceType? GetDevice(string userAgentMobile)
     {
-        public IDeviceType GetDevice(string userAgentMobile)
+        if (string.IsNullOrEmpty(userAgentMobile))
         {
-            if (string.IsNullOrEmpty(userAgentMobile))
-            {
-                return null;
-            }
-
-            var isMobile = userAgentMobile.Trim('?') == "1";
-
-            if (isMobile)
-            {
-                return new DeviceType(DeviceTypeNames.Mobile);
-            }
-
             return null;
         }
+
+        var isMobile = userAgentMobile.Trim('?') == "1";
+
+        if (isMobile)
+        {
+            return new DeviceType(DeviceTypeNames.Mobile);
+        }
+
+        return null;
     }
 }

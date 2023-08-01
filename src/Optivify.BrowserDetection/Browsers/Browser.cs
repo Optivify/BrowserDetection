@@ -1,22 +1,19 @@
-﻿using System;
+﻿namespace Optivify.BrowserDetection.Browsers;
 
-namespace Optivify.BrowserDetection.Browsers
+public class Browser : IBrowser
 {
-    public class Browser : IBrowser
+    public string Name { get; }
+
+    public Version Version { get; }
+
+    public Browser(string name, Version version)
     {
-        public string Name { get; }
+        this.Name = name;
+        this.Version = version;
+    }
 
-        public Version Version { get; }
-
-        public Browser(string name, Version version)
-        {
-            Name = name;
-            Version = version;
-        }
-
-        public override string ToString()
-        {
-            return $"{Name}-{Version}";
-        }
+    public override string ToString()
+    {
+        return $"{this.Name}-{this.Version}";
     }
 }

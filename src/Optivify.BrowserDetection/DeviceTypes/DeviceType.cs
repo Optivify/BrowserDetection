@@ -1,12 +1,11 @@
-﻿namespace Optivify.BrowserDetection.DeviceTypes
-{
-    public class DeviceType : IDeviceType
-    {
-        public string Type { get; }
+﻿namespace Optivify.BrowserDetection.DeviceTypes;
 
-        public DeviceType(string name)
-        {
-            this.Type = name;
-        }
+public class DeviceType : IDeviceType
+{
+    public string Type { get; }
+
+    public DeviceType(string name)
+    {
+        this.Type = name;
     }
 }
