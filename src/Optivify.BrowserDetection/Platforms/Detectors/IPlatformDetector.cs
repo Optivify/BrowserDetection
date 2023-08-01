@@ -1,11 +1,10 @@
-﻿namespace Optivify.BrowserDetection.Platforms.Detectors
+﻿namespace Optivify.BrowserDetection.Platforms.Detectors;
+
+public interface IPlatformDetector
 {
-    public interface IPlatformDetector
-    {
-        int Order { get; }
+    int Order { get; }
 
-        string PlatformName { get; }
+    string PlatformName { get; }
 
-        bool TryParse(string userAgent, out IPlatform platform);
-    }
+    bool TryParse(string platformString, out IPlatform? platform);
 }

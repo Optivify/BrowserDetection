@@ -1,9 +1,8 @@
-﻿namespace Optivify.BrowserDetection.ClientHints.Browsers
-{
-    public static class ClientHintsBrowserNames
-    {
-        public const string GoogleChrome = "Google Chrome";
+﻿namespace Optivify.BrowserDetection.ClientHints.Browsers;
 
-        public const string MicrosoftEdge = "Microsoft Edge";
-    }
+public static class ClientHintsBrowserNames
+{
+    public const string GoogleChrome = "Google Chrome";
+
+    public const string MicrosoftEdge = "Microsoft Edge";
 }

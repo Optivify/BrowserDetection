@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Optivify.BrowserDetection",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{54E64655-A528-4310-BD41-9FE3934DDA32}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Optivify.BrowserDetection.AspNetCore", "Optivify.BrowserDetection.AspNetCore\Optivify.BrowserDetection.AspNetCore.csproj", "{8952E6E9-49FE-4764-9563-313216D0272A}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{7BE6DE8D-EF01-4D18-A82C-AC708EADE30B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Optivify.BrowserDetection.Tests", "Tests\Optivify.BrowserDetection.Tests\Optivify.BrowserDetection.Tests.csproj", "{3A8605B0-538B-4855-BE78-D11A0340685B}"
@@ -29,10 +27,6 @@ Global
 		{2C4B5FF9-B224-4ADB-B835-9D6AEC14820B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C4B5FF9-B224-4ADB-B835-9D6AEC14820B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C4B5FF9-B224-4ADB-B835-9D6AEC14820B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8952E6E9-49FE-4764-9563-313216D0272A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8952E6E9-49FE-4764-9563-313216D0272A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8952E6E9-49FE-4764-9563-313216D0272A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8952E6E9-49FE-4764-9563-313216D0272A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3A8605B0-538B-4855-BE78-D11A0340685B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3A8605B0-538B-4855-BE78-D11A0340685B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A8605B0-538B-4855-BE78-D11A0340685B}.Release|Any CPU.ActiveCfg = Release|Any CPU

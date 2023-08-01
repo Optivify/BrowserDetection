@@ -1,12 +1,11 @@
-﻿namespace Optivify.BrowserDetection.Platforms
-{
-    public interface IPlatform
-    {
-        /// <summary>
-        /// The platform name.
-        /// </summary>
-        string Name { get; }
+﻿namespace Optivify.BrowserDetection.Platforms;
 
-        string PlatformString { get; }
-    }
+public interface IPlatform
+{
+    /// <summary>
+    /// The platform name.
+    /// </summary>
+    string Name { get; }
+
+    string PlatformString { get; }
 }

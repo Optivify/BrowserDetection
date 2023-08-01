@@ -1,51 +1,49 @@
-﻿using Optivify.BrowserDetection.ClientHints.Helpers;
-using Optivify.BrowserDetection.Browsers;
+﻿using Optivify.BrowserDetection.Browsers;
+using Optivify.BrowserDetection.ClientHints.Helpers;
 using Optivify.BrowserDetection.Helpers;
-using System;
 
-namespace Optivify.BrowserDetection.ClientHints.Browsers
+namespace Optivify.BrowserDetection.ClientHints.Browsers;
+
+public interface IClientHintsBrowserDetector
 {
-    public interface IClientHintsBrowserDetector
-    {
-        IBrowser GetBrowser(string clientHintsUserAgent);
-    }
+    IBrowser? GetBrowser(string clientHintsUserAgent);
+}
 
-    public class ClientHintsBrowserDetector : IClientHintsBrowserDetector
+public class ClientHintsBrowserDetector : IClientHintsBrowserDetector
+{
+    public IBrowser? GetBrowser(string clientHintsUserAgent)
     {
-        public IBrowser GetBrowser(string clientHintsUserAgent)
+        if (string.IsNullOrEmpty(clientHintsUserAgent))
         {
-            if (string.IsNullOrEmpty(clientHintsUserAgent))
+            return null;
+        }
+
+        var parts = clientHintsUserAgent.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+        if (parts.Length > 0)
+        {
+            // Browser name and version
+            var browserNameParts = parts[2].Split(';');
+
+            if (browserNameParts.Length > 1)
             {
-                return null;
-            }
+                var browserName = ClientHintsHelpers.GetBrowserName(ClientHintsHelpers.GetClientHintsValueFromString(browserNameParts[0]));
+                var versionString = VersionHelpers.GetClientHintsVersionString(ClientHintsHelpers.GetClientHintsValueFromString(browserNameParts[1]));
 
-            var parts = clientHintsUserAgent.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-
-            if (parts.Length > 0)
-            {
-                // Browser name and version
-                var browserNameParts = parts[2].Split(';');
-
-                if (browserNameParts.Length > 1)
+                if (!string.IsNullOrEmpty(browserName))
                 {
-                    var browserName = ClientHintsHelpers.GetBrowserName(ClientHintsHelpers.GetClientHintsValueFromString(browserNameParts[0]));
-                    var versionString = VersionHelpers.GetClientHintsVersionString(ClientHintsHelpers.GetClientHintsValueFromString(browserNameParts[1]));
-
-                    if (!string.IsNullOrEmpty(browserName))
+                    if (VersionHelpers.TryParseSafe(versionString, out var version) && version != null)
                     {
-                        if (VersionHelpers.TryParseSafe(versionString, out var version) && version != null)
-                        {
-                            return new Browser(browserName, version);
-                        }
-                        else
-                        {
-                            return new Browser(browserName, new Version());
-                        }
+                        return new Browser(browserName, version);
+                    }
+                    else
+                    {
+                        return new Browser(browserName, new Version());
                     }
                 }
             }
-
-            return null;
         }
+
+        return null;
     }
 }

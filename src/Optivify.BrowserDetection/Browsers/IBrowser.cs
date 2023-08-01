@@ -1,17 +1,14 @@
-﻿using System;
+﻿namespace Optivify.BrowserDetection.Browsers;
 
-namespace Optivify.BrowserDetection.Browsers
+public interface IBrowser
 {
-    public interface IBrowser
-    {
-        /// <summary>
-        /// The browser name.
-        /// </summary>
-        string Name { get; }
+    /// <summary>
+    /// The browser name.
+    /// </summary>
+    string Name { get; }
 
-        /// <summary>
-        /// The browser version.
-        /// </summary>
-        Version Version { get; }
-    }
+    /// <summary>
+    /// The browser version.
+    /// </summary>
+    Version Version { get; }
 }

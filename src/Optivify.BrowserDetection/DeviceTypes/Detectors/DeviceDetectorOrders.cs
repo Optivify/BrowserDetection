@@ -1,15 +1,14 @@
-﻿namespace Optivify.BrowserDetection.DeviceTypes.Detectors
+﻿namespace Optivify.BrowserDetection.DeviceTypes.Detectors;
+
+public static class DeviceDetectorOrders
 {
-    public static class DeviceDetectorOrders
-    {
-        public const int Phone = 10;
+    public const int Phone = 10;
 
-        public const int Desktop = 20;
+    public const int Desktop = 20;
 
-        public const int Tablet = 30;
+    public const int Tablet = 30;
 
-        public const int Bot = 40;
+    public const int Bot = 40;
 
-        public const int MobileBot = 50;
-    }
+    public const int MobileBot = 50;
 }

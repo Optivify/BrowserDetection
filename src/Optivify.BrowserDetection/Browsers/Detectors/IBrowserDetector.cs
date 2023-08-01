@@ -1,11 +1,10 @@
-﻿namespace Optivify.BrowserDetection.Browsers.Detectors
+﻿namespace Optivify.BrowserDetection.Browsers.Detectors;
+
+public interface IBrowserDetector
 {
-    public interface IBrowserDetector
-    {
-        int Order { get; }
+    int Order { get; }
 
-        string BrowserName { get; }
+    string BrowserName { get; }
 
-        bool TryParse(string userAgent, out IBrowser browser);
-    }
+    bool TryParse(string? userAgent, out IBrowser? browser);
 }

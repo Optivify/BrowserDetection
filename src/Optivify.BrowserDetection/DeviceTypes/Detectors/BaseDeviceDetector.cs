@@ -1,53 +1,51 @@
 ﻿using Optivify.BrowserDetection.Platforms;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace Optivify.BrowserDetection.DeviceTypes.Detectors
+namespace Optivify.BrowserDetection.DeviceTypes.Detectors;
+
+public abstract class BaseDeviceDetector : IDeviceTypeDetector
 {
-    public abstract class BaseDeviceDetector : IDeviceTypeDetector
+    public abstract int Order { get; }
+
+    public abstract string DeviceType { get; }
+
+    protected List<Regex>? regexList;
+
+    protected BaseDeviceDetector(Dictionary<string, Dictionary<string, string>>? devices)
     {
-        public abstract int Order { get; }
-
-        public abstract string DeviceType { get; }
-
-        protected List<Regex> regexList;
-
-        protected BaseDeviceDetector(Dictionary<string, Dictionary<string, string>> devices)
+        if (devices == null || !devices.TryGetValue(this.DeviceType, out var regexStrings) || regexStrings == null)
         {
-            if (devices == null || !devices.TryGetValue(DeviceType, out var regexStrings) || regexStrings == null)
+            return;
+        }
+
+        this.regexList = new List<Regex>();
+
+        foreach (var regexString in regexStrings.Values)
+        {
+            if (!string.IsNullOrEmpty(regexString))
             {
-                return;
+                this.regexList.Add(new Regex(regexString, RegexOptions.Compiled));
             }
+        }
+    }
 
-            regexList = new List<Regex>();
-
-            foreach (var regexString in regexStrings.Values)
+    public virtual bool TryParse(IPlatform platform, string? userAgent, out IDeviceType? device)
+    {
+        if (userAgent is not null && this.regexList is not null)
+        {
+            foreach (var regex in this.regexList)
             {
-                if (!string.IsNullOrEmpty(regexString))
+                if (regex.IsMatch(platform.PlatformString))
                 {
-                    regexList.Add(new Regex(regexString, RegexOptions.Compiled));
+                    device = new DeviceType(this.DeviceType);
+
+                    return true;
                 }
             }
         }
 
-        public virtual bool TryParse(IPlatform platform, string userAgent, out IDeviceType device)
-        {
-            if (regexList != null)
-            {
-                foreach (var regex in regexList)
-                {
-                    if (regex.IsMatch(platform.PlatformString))
-                    {
-                        device = new DeviceType(DeviceType);
+        device = null;
 
-                        return true;
-                    }
-                }
-            }
-
-            device = null;
-
-            return false;
-        }
+        return false;
     }
 }

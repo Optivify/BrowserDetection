@@ -1,20 +1,19 @@
-﻿namespace Optivify.BrowserDetection.Platforms
+﻿namespace Optivify.BrowserDetection.Platforms;
+
+public class Platform : IPlatform
 {
-    public class Platform : IPlatform
+    public string PlatformString { get; }
+
+    public string Name { get; }
+
+    public Platform(string platformString, string name)
     {
-        public string PlatformString { get; }
+        this.PlatformString = platformString;
+        this.Name = name;
+    }
 
-        public string Name { get; }
-
-        public Platform(string platformString, string name)
-        {
-            this.PlatformString = platformString;
-            this.Name = name;
-        }
-
-        public override string ToString()
-        {
-            return this.Name;
-        }
+    public override string ToString()
+    {
+        return this.Name;
     }
 }
