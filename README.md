@@ -5,7 +5,7 @@ The extensible library that uses client hints and user agent to detect browser, 
 #### 1. Install the package.
 
 ````
-Install-Package Optivify.BrowserDetection.AspNetCore
+Install-Package Optivify.BrowserDetection
 ````
 
 #### 2. Register the browser detection services in Program.
