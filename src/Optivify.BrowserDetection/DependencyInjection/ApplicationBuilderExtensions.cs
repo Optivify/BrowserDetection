@@ -5,7 +5,7 @@ namespace Optivify.BrowserDetection.DependencyInjection;
 
 public static class ApplicationBuilderExtensions
 {
-    public static IApplicationBuilder UseClientHintsDetection(this IApplicationBuilder app)
+    public static IApplicationBuilder UseBrowserDetection(this IApplicationBuilder app)
     {
         return app.UseMiddleware<ClientHintsMiddleware>();
     }

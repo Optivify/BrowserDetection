@@ -1,9 +1,7 @@
-using Optivify.BrowserDetection;
 using Optivify.BrowserDetection.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
-var configuration = builder.Configuration;
 
 services.AddHttpContextAccessor();
 
@@ -14,13 +12,6 @@ services.AddBrowserDetection();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
-
-var detectionOptions = app.Services.GetRequiredService<BrowserDetectionOptions>();
-
-if (!detectionOptions.SkipClientHintsDetection)
-{
-    app.UseClientHintsDetection();
-}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -40,5 +31,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.UseBrowserDetection();
 
 app.Run();
