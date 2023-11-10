@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using Optivify.BrowserDetection.ClientHints.Extensions;
 
 namespace Optivify.BrowserDetection.ClientHints;
@@ -9,10 +10,10 @@ public class ClientHintsMiddleware
 
     private readonly BrowserDetectionOptions detectionOptions;
 
-    public ClientHintsMiddleware(RequestDelegate next, BrowserDetectionOptions detectionOptions)
+    public ClientHintsMiddleware(RequestDelegate next, IOptions<BrowserDetectionOptions> detectionOptions)
     {
         this.next = next;
-        this.detectionOptions = detectionOptions;
+        this.detectionOptions = detectionOptions.Value;
     }
 
     public async Task InvokeAsync(HttpContext context)

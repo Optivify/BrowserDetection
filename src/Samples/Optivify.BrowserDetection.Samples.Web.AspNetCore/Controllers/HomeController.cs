@@ -2,28 +2,24 @@
 using Optivify.BrowserDetection.Samples.Web.AspNetCore.Models;
 using Optivify.BrowserDetection.Services;
 using System.Diagnostics;
+using Microsoft.Extensions.Options;
 
 namespace Optivify.BrowserDetection.Samples.Web.AspNetCore.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> logger;
-
         private readonly BrowserDetectionOptions browserDetectionOptions;
 
-        public HomeController(
-            ILogger<HomeController> logger, 
-            BrowserDetectionOptions browserDetectionOptions)
+        public HomeController(IOptions<BrowserDetectionOptions> options)
         {
-            this.logger = logger;
-            this.browserDetectionOptions = browserDetectionOptions;
+            this.browserDetectionOptions = options.Value;
         }
 
         public IActionResult Index()
         {
             var model = new HomeViewModel
             {
-                SkipClientHintsDetection = false,
+                SkipClientHintsDetection = this.browserDetectionOptions.SkipClientHintsDetection,
                 UserAgent = Request.Headers["User-Agent"]
             };
 
@@ -43,7 +39,7 @@ namespace Optivify.BrowserDetection.Samples.Web.AspNetCore.Controllers
 
             var customBrowserDetectionOptions = new BrowserDetectionOptions
             {
-                SkipClientHintsDetection = true,
+                SkipClientHintsDetection = this.browserDetectionOptions.SkipClientHintsDetection,
                 AcceptClientHints = this.browserDetectionOptions.AcceptClientHints,
                 CriticalClientHints = this.browserDetectionOptions.CriticalClientHints
             };
@@ -52,7 +48,7 @@ namespace Optivify.BrowserDetection.Samples.Web.AspNetCore.Controllers
 
             var model = new HomeViewModel
             {
-                SkipClientHintsDetection = true,
+                SkipClientHintsDetection = this.browserDetectionOptions.SkipClientHintsDetection,
                 UserAgent = userAgent
             };
 

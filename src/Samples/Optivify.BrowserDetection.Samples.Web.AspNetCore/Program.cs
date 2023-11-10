@@ -8,7 +8,7 @@ var configuration = builder.Configuration;
 services.AddHttpContextAccessor();
 
 // Add browser detection
-services.AddBrowserDetection(configuration);
+services.AddBrowserDetection();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

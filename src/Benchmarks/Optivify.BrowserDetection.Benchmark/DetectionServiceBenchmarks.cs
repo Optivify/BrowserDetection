@@ -125,8 +125,7 @@ namespace Optivify.BrowserDetection.Benchmark
             mockUserAgentResolver.Setup(a => a.UserAgent).Returns(userAgent);
 
             return new DetectionService(
-                new BrowserDetectionOptions(),
-
+                Options.Create(new BrowserDetectionOptions()),
                 this.clientHintsEngineDetector,
                 this.clientHintsBrowserDetector,
                 this.clientHintsDeviceDetector,

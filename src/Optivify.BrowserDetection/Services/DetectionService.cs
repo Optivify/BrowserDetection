@@ -16,6 +16,7 @@ using Optivify.BrowserDetection.Platforms;
 using Optivify.BrowserDetection.Platforms.Detectors;
 using Optivify.BrowserDetection.UserAgents;
 using System.Text.RegularExpressions;
+using Microsoft.Extensions.Options;
 
 namespace Optivify.BrowserDetection.Services;
 
@@ -140,7 +141,7 @@ public class DetectionService : IDetectionService
     #endregion
 
     public DetectionService(
-        BrowserDetectionOptions options,
+        IOptions<BrowserDetectionOptions> options,
 
         IClientHintsEngineDetector clientHintsEngineDetector,
         IClientHintsBrowserDetector clientHintsBrowserDetector,
@@ -157,7 +158,7 @@ public class DetectionService : IDetectionService
         IEnumerable<IDeviceArchitectureDetector> architectureDetectors
     )
     {
-        this.BrowserDetectionOptions = options;
+        this.BrowserDetectionOptions = options.Value;
 
         this.clientHintsEngineDetector = clientHintsEngineDetector;
         this.clientHintsBrowserDetector = clientHintsBrowserDetector;

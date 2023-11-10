@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using Microsoft.Extensions.Options;
+using Moq;
 using Optivify.BrowserDetection.Browsers.Detectors;
 using Optivify.BrowserDetection.ClientHints;
 using Optivify.BrowserDetection.ClientHints.Browsers;
@@ -116,7 +117,7 @@ namespace Optivify.BrowserDetection.Tests
             };
 
             return new DetectionService(
-                new BrowserDetectionOptions(),
+                Options.Create(new BrowserDetectionOptions()),
 
                 clientHintsEngineDetector,
                 clientHintsBrowserDetector,

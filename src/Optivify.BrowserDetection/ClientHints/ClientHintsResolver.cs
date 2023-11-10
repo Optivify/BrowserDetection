@@ -23,7 +23,7 @@ public interface IClientHintsResolver
 
     string UserAgentPlatform { get; }
 
-    Version UserAgentPlatformVersion { get; }
+    Version? UserAgentPlatformVersion { get; }
 
     double? DevicePixelRatio { get; }
 

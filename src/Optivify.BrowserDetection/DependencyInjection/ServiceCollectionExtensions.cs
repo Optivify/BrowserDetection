@@ -9,7 +9,6 @@ using Optivify.BrowserDetection.DeviceOperatingSystems.Detectors;
 using Optivify.BrowserDetection.DeviceTypes.Detectors;
 using Optivify.BrowserDetection.Engines.Detectors;
 using Optivify.BrowserDetection.Platforms.Detectors;
-
 namespace Optivify.BrowserDetection.DependencyInjection;
 
 public static class ServiceCollectionExtensions
@@ -17,19 +16,25 @@ public static class ServiceCollectionExtensions
     public static IDetectionBuilder AddBrowserDetection(this IServiceCollection services, IConfiguration configuration)
     {
         var section = configuration.GetSection(BrowserDetectionOptions.ConfigurationSectionName);
-        var options = section.Get<BrowserDetectionOptions>() ?? new BrowserDetectionOptions();
 
         // Configure IOptions
         services.Configure<BrowserDetectionOptions>(section);
 
-        return services.AddBrowserDetection(options);
+        return services.AddBrowserDetection();
     }
 
-    public static IDetectionBuilder AddBrowserDetection(this IServiceCollection services, BrowserDetectionOptions options)
+    public static IDetectionBuilder AddBrowserDetection(this IServiceCollection services, Action<BrowserDetectionOptions>? configureAction = null)
     {
-        services.AddSingleton(options);
-
         var builder = new DetectionBuilder(services);
+
+        if (configureAction is not null)
+        {
+            services.Configure(configureAction);
+        }
+
+        services
+            .AddOptions<BrowserDetectionOptions>()
+            .BindConfiguration(BrowserDetectionOptions.ConfigurationSectionName);
 
         builder
             .AddClientHintsResolver()
