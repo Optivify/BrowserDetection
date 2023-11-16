@@ -1,4 +1,5 @@
-﻿using Optivify.BrowserDetection.Platforms;
+﻿using System.Diagnostics.CodeAnalysis;
+using Optivify.BrowserDetection.Platforms;
 
 namespace Optivify.BrowserDetection.DeviceTypes.Detectors;
 
@@ -8,5 +9,5 @@ public interface IDeviceTypeDetector
 
     string DeviceType { get; }
 
-    bool TryParse(IPlatform platform, string? userAgent, out IDeviceType? device);
+    bool TryParse(IPlatform platform, string? userAgent, [NotNullWhen(true)] out IDeviceType? device);
 }

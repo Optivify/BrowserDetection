@@ -1,4 +1,5 @@
-﻿using Optivify.BrowserDetection.Helpers;
+﻿using System.Diagnostics.CodeAnalysis;
+using Optivify.BrowserDetection.Helpers;
 using Optivify.BrowserDetection.Platforms;
 using System.Text.RegularExpressions;
 
@@ -12,7 +13,7 @@ public abstract class BaseDeviceOperatingSystemDetector : IDeviceOperatingSystem
 
     protected Regex? regex;
 
-    protected BaseDeviceOperatingSystemDetector(Dictionary<string, string>? operatingSystems)
+    protected BaseDeviceOperatingSystemDetector(IReadOnlyDictionary<string, string>? operatingSystems)
     {
         if (operatingSystems == null || !operatingSystems.TryGetValue(this.OperatingSystemName, out var regexString) || string.IsNullOrEmpty(regexString))
         {
@@ -22,7 +23,7 @@ public abstract class BaseDeviceOperatingSystemDetector : IDeviceOperatingSystem
         this.regex = new Regex(regexString, RegexOptions.Compiled);
     }
 
-    public virtual bool TryParse(IPlatform platform, string? userAgent, out IDeviceOperatingSystem? operatingSystem)
+    public virtual bool TryParse(IPlatform platform, string? userAgent, [NotNullWhen(true)] out IDeviceOperatingSystem? operatingSystem)
     {
         if (userAgent is not null && this.regex is not null)
         {
@@ -33,14 +34,9 @@ public abstract class BaseDeviceOperatingSystemDetector : IDeviceOperatingSystem
             {
                 var versionString = VersionHelpers.GetVersionString(platformString);
 
-                if (VersionHelpers.TryParseSafe(versionString, out var version) && version != null)
-                {
-                    operatingSystem = new DeviceOperatingSystem(this.OperatingSystemName, version);
-                }
-                else
-                {
-                    operatingSystem = new DeviceOperatingSystem(this.OperatingSystemName, new Version());
-                }
+                operatingSystem = VersionHelpers.TryParseSafe(versionString, out var version) 
+                                    ? new DeviceOperatingSystem(this.OperatingSystemName, version) 
+                                    : new DeviceOperatingSystem(this.OperatingSystemName, new Version());
 
                 return true;
             }

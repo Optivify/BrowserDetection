@@ -1,4 +1,5 @@
-﻿using Optivify.BrowserDetection.DetectionData;
+﻿using System.Diagnostics.CodeAnalysis;
+using Optivify.BrowserDetection.DetectionData;
 using Optivify.BrowserDetection.Platforms;
 
 namespace Optivify.BrowserDetection.DeviceTypes.Detectors;
@@ -13,7 +14,7 @@ public class DesktopDeviceDetector : BaseDeviceDetector
     {
     }
 
-    public override bool TryParse(IPlatform platform, string? userAgent, out IDeviceType? device)
+    public override bool TryParse(IPlatform platform, string? userAgent, [NotNullWhen(true)] out IDeviceType? device)
     {
         if (base.TryParse(platform, userAgent, out device))
         {

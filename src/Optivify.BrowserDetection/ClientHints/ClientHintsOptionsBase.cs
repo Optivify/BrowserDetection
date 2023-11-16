@@ -33,7 +33,7 @@ public abstract class AcceptClientHintsOptionsBase
         {
             sb.Append(AcceptClientHintsHeaderValues.UserAgentArch).Append(", ");
         }
-        
+
         if (this.AcceptUserAgentBitness)
         {
             sb.Append(AcceptClientHintsHeaderValues.UserAgentBitness).Append(", ");
@@ -67,7 +67,7 @@ public abstract class AcceptClientHintsOptionsBase
         if (this.AcceptViewportWidth)
         {
             sb.Append(AcceptClientHintsHeaderValues.ViewportWidth).Append(", ");
-			}
+        }
 
         if (this.AcceptViewportHeight)
         {

@@ -7,21 +7,21 @@ namespace Optivify.BrowserDetection.ClientHints;
 
 public interface IClientHintsResolver
 {
-    string UserAgent { get; }
+    string? UserAgent { get; }
 
-    string UserAgentArch { get; }
+    string? UserAgentArch { get; }
 
-    string UserAgentBitness { get; }
+    string? UserAgentBitness { get; }
 
-    string UserAgentFullVersion { get; }
+    string? UserAgentFullVersion { get; }
 
-    string UserAgentFullVersionList { get; }
+    string? UserAgentFullVersionList { get; }
 
-    string UserAgentMobile { get; }
+    string? UserAgentMobile { get; }
 
-    string UserAgentModel { get; }
+    string? UserAgentModel { get; }
 
-    string UserAgentPlatform { get; }
+    string? UserAgentPlatform { get; }
 
     Version? UserAgentPlatformVersion { get; }
 
@@ -136,18 +136,18 @@ public class ClientHintsResolver : IClientHintsResolver
 
     protected ClientHintsResolver()
     {
-        this.userAgent = new Lazy<string?>(() => { return this.GetUserAgent(); });
-        this.userAgentArch = new Lazy<string?>(() => { return this.GetUserAgentArch(); });
-        this.userAgentBitness = new Lazy<string?>(() => { return this.GetUserAgentBitness(); });
-        this.userAgentFullVersion = new Lazy<string?>(() => { return this.GetUserAgentFullVersion(); });
-        this.userAgentFullVersionList = new Lazy<string?>(() => { return this.GetUserAgentFullVersionList(); });
-        this.userAgentMobile = new Lazy<string?>(() => { return this.GetUserAgentMobile(); });
-        this.devicePixelRatio = new Lazy<double?>(() => { return this.GetDevicePixelRatio(); });
-        this.userAgentModel = new Lazy<string?>(() => { return this.GetModel(); });
-        this.userAgentPlatform = new Lazy<string?>(() => { return this.GetPlatform(); });
-        this.userAgentPlatformVersion = new Lazy<Version?>(() => { return this.GetPlatformVersion(); });
-        this.viewportWidth = new Lazy<int?>(() => { return this.GetViewportWidth(); });
-        this.viewportHeight = new Lazy<int?>(() => { return this.GetViewportHeight(); });
+        this.userAgent = new Lazy<string?>(this.GetUserAgent);
+        this.userAgentArch = new Lazy<string?>(this.GetUserAgentArch);
+        this.userAgentBitness = new Lazy<string?>(this.GetUserAgentBitness);
+        this.userAgentFullVersion = new Lazy<string?>(this.GetUserAgentFullVersion);
+        this.userAgentFullVersionList = new Lazy<string?>(this.GetUserAgentFullVersionList);
+        this.userAgentMobile = new Lazy<string?>(this.GetUserAgentMobile);
+        this.devicePixelRatio = new Lazy<double?>(this.GetDevicePixelRatio);
+        this.userAgentModel = new Lazy<string?>(this.GetModel);
+        this.userAgentPlatform = new Lazy<string?>(this.GetPlatform);
+        this.userAgentPlatformVersion = new Lazy<Version?>(this.GetPlatformVersion);
+        this.viewportWidth = new Lazy<int?>(this.GetViewportWidth);
+        this.viewportHeight = new Lazy<int?>(this.GetViewportHeight);
     }
 
     public ClientHintsResolver(IDictionary<string, string> headers) : this()
@@ -162,12 +162,12 @@ public class ClientHintsResolver : IClientHintsResolver
 
     private string? GetUserAgent()
     {
-        if (this.headerDictionary != null)
+        if (this.headerDictionary is not null)
         {
             return this.headerDictionary[RequestHeaderNames.UserAgent].FirstOrDefault();
         }
 
-        if (this.headers != null && this.headers.TryGetValue(RequestHeaderNames.UserAgent, out var value))
+        if (this.headers is not null && this.headers.TryGetValue(RequestHeaderNames.UserAgent, out var value))
         {
             return value;
         }
@@ -177,12 +177,12 @@ public class ClientHintsResolver : IClientHintsResolver
 
     private string? GetUserAgentArch()
     {
-        if (this.headerDictionary != null)
+        if (this.headerDictionary is not null)
         {
             return this.headerDictionary[RequestHeaderNames.UserAgentArch].FirstOrDefault();
         }
 
-        if (this.headers != null && this.headers.TryGetValue(RequestHeaderNames.UserAgentArch, out var value))
+        if (this.headers is not null && this.headers.TryGetValue(RequestHeaderNames.UserAgentArch, out var value))
         {
             return value;
         }
@@ -192,12 +192,12 @@ public class ClientHintsResolver : IClientHintsResolver
 
     private string? GetUserAgentBitness()
     {
-        if (this.headerDictionary != null)
+        if (this.headerDictionary is not null)
         {
             return this.headerDictionary[RequestHeaderNames.UserAgentBitness].FirstOrDefault();
         }
 
-        if (this.headers != null && this.headers.TryGetValue(RequestHeaderNames.UserAgentBitness, out var value))
+        if (this.headers is not null && this.headers.TryGetValue(RequestHeaderNames.UserAgentBitness, out var value))
         {
             return value;
         }
@@ -207,12 +207,12 @@ public class ClientHintsResolver : IClientHintsResolver
 
     private string? GetUserAgentFullVersion()
     {
-        if (this.headerDictionary != null)
+        if (this.headerDictionary is not null)
         {
             return this.headerDictionary[RequestHeaderNames.UserAgentFullVersion].FirstOrDefault();
         }
 
-        if (this.headers != null && this.headers.TryGetValue(RequestHeaderNames.UserAgentFullVersion, out var value))
+        if (this.headers is not null && this.headers.TryGetValue(RequestHeaderNames.UserAgentFullVersion, out var value))
         {
             return value;
         }
@@ -222,12 +222,12 @@ public class ClientHintsResolver : IClientHintsResolver
 
     private string? GetUserAgentFullVersionList()
     {
-        if (this.headerDictionary != null)
+        if (this.headerDictionary is not null)
         {
             return this.headerDictionary[RequestHeaderNames.UserAgentFullVersionList].FirstOrDefault();
         }
 
-        if (this.headers != null && this.headers.TryGetValue(RequestHeaderNames.UserAgentFullVersionList, out var value))
+        if (this.headers is not null && this.headers.TryGetValue(RequestHeaderNames.UserAgentFullVersionList, out var value))
         {
             return value;
         }
@@ -237,12 +237,12 @@ public class ClientHintsResolver : IClientHintsResolver
 
     private string? GetUserAgentMobile()
     {
-        if (this.headerDictionary != null)
+        if (this.headerDictionary is not null)
         {
             return this.headerDictionary[RequestHeaderNames.UserAgentMobile].FirstOrDefault();
         }
 
-        if (this.headers != null && this.headers.TryGetValue(RequestHeaderNames.UserAgentMobile, out var value))
+        if (this.headers is not null && this.headers.TryGetValue(RequestHeaderNames.UserAgentMobile, out var value))
         {
             return value;
         }
@@ -252,20 +252,17 @@ public class ClientHintsResolver : IClientHintsResolver
 
     private double? GetDevicePixelRatio()
     {
-        if (this.headerDictionary != null)
+        if (this.headerDictionary is not null &&
+            double.TryParse(this.headerDictionary[RequestHeaderNames.DevicePixelRatio].FirstOrDefault(), out var headerDictionaryValue))
         {
-            if (double.TryParse(this.headerDictionary[RequestHeaderNames.DevicePixelRatio].FirstOrDefault(), out var devicePixelRatio))
-            {
-                return devicePixelRatio;
-            }
+            return headerDictionaryValue;
         }
 
-        if (this.headers != null && this.headers.TryGetValue(RequestHeaderNames.DevicePixelRatio, out _))
+        if (this.headers is not null &&
+            this.headers.TryGetValue(RequestHeaderNames.DevicePixelRatio, out _) &&
+            double.TryParse(this.headers[RequestHeaderNames.DevicePixelRatio], out var headersValue))
         {
-            if (double.TryParse(this.headers[RequestHeaderNames.DevicePixelRatio], out var devicePixelRatio))
-            {
-                return devicePixelRatio;
-            }
+            return headersValue;
         }
 
         return null;
@@ -273,14 +270,14 @@ public class ClientHintsResolver : IClientHintsResolver
 
     private string? GetModel()
     {
-        if (this.headerDictionary != null)
+        if (this.headerDictionary is not null)
         {
             return this.headerDictionary[RequestHeaderNames.UserAgentModel].FirstOrDefault();
         }
 
-        if (this.headers != null && this.headers.TryGetValue(RequestHeaderNames.UserAgentModel, out var value))
+        if (this.headers is not null && this.headers.TryGetValue(RequestHeaderNames.UserAgentModel, out var headersValue))
         {
-            return ClientHintsHelpers.GetClientHintsValueFromString(value);
+            return ClientHintsHelpers.GetClientHintsValueFromString(headersValue);
         }
 
         return null;
@@ -288,14 +285,14 @@ public class ClientHintsResolver : IClientHintsResolver
 
     private string? GetPlatform()
     {
-        if (this.headerDictionary != null)
+        if (this.headerDictionary is not null)
         {
             return this.headerDictionary[RequestHeaderNames.UserAgentPlatform].FirstOrDefault();
         }
 
-        if (this.headers != null && this.headers.TryGetValue(RequestHeaderNames.UserAgentPlatform, out var value))
+        if (this.headers is not null && this.headers.TryGetValue(RequestHeaderNames.UserAgentPlatform, out var headersValue))
         {
-            return ClientHintsHelpers.GetClientHintsValueFromString(value);
+            return ClientHintsHelpers.GetClientHintsValueFromString(headersValue);
         }
 
         return null;
@@ -303,65 +300,37 @@ public class ClientHintsResolver : IClientHintsResolver
 
     private Version? GetPlatformVersion()
     {
-        if (this.headerDictionary != null)
+        if (this.headerDictionary is not null &&
+            VersionHelpers.TryParseSafe(ClientHintsHelpers.GetClientHintsValueFromString(
+                this.headerDictionary[RequestHeaderNames.PlatformVersion].FirstOrDefault()), out var headerDictionaryVersion))
         {
-            if (VersionHelpers.TryParseSafe(ClientHintsHelpers.GetClientHintsValueFromString(this.headerDictionary[RequestHeaderNames.PlatformVersion].FirstOrDefault()), out var version))
-            {
-                return version;
-            }
+            return headerDictionaryVersion;
         }
 
-        if (this.headers != null && this.headers.TryGetValue(RequestHeaderNames.PlatformVersion, out var value))
+        if (this.headers != null && 
+            this.headers.TryGetValue(RequestHeaderNames.PlatformVersion, out var value) &&
+            VersionHelpers.TryParseSafe(ClientHintsHelpers.GetClientHintsValueFromString(value), out var headersVersion))
         {
-            if (VersionHelpers.TryParseSafe(ClientHintsHelpers.GetClientHintsValueFromString(value), out var version))
-            {
-                return version;
-            }
-        }
-
-        return null;
-    }
-
-    private int? GetViewportWidth()
-    {
-        var width = this.GetIntValue(RequestHeaderNames.ViewportWidth);
-
-        if (width != null)
-        {
-            return width;
+            return headersVersion;
         }
 
         return null;
     }
 
-    private int? GetViewportHeight()
-    {
-        var height = this.GetIntValue(RequestHeaderNames.ViewportHeight);
+    private int? GetViewportWidth() => this.GetIntValue(RequestHeaderNames.ViewportWidth);
 
-        if (height != null)
-        {
-            return height;
-        }
-
-        return null;
-    }
+    private int? GetViewportHeight() => this.GetIntValue(RequestHeaderNames.ViewportHeight);
 
     private int? GetIntValue(string name)
     {
-        if (this.headerDictionary != null)
+        if (this.headerDictionary is not null && int.TryParse(this.headerDictionary[name].FirstOrDefault(), out var headerDictionaryValue))
         {
-            if (int.TryParse(this.headerDictionary[name].FirstOrDefault(), out var intValue))
-            {
-                return intValue;
-            }
+            return headerDictionaryValue;
         }
 
-        if (this.headers != null && this.headers.TryGetValue(name, out var value))
+        if (this.headers is not null && this.headers.TryGetValue(name, out var value) && int.TryParse(value, out var headersValue))
         {
-            if (int.TryParse(value, out var intValue))
-            {
-                return intValue;
-            }
+            return headersValue;
         }
 
         return null;

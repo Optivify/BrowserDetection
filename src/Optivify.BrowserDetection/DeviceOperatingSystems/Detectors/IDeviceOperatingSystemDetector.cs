@@ -1,4 +1,5 @@
-﻿using Optivify.BrowserDetection.Platforms;
+﻿using System.Diagnostics.CodeAnalysis;
+using Optivify.BrowserDetection.Platforms;
 
 namespace Optivify.BrowserDetection.DeviceOperatingSystems.Detectors;
 
@@ -8,5 +9,5 @@ public interface IDeviceOperatingSystemDetector
 
     string OperatingSystemName { get; }
 
-    bool TryParse(IPlatform platform, string? userAgent, out IDeviceOperatingSystem? operatingSystem);
+    bool TryParse(IPlatform platform, string? userAgent, [NotNullWhen(true)] out IDeviceOperatingSystem? operatingSystem);
 }

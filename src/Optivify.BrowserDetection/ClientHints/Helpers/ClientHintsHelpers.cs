@@ -14,31 +14,16 @@ public static class ClientHintsHelpers
             return BrowserNames.Chrome;
         }
 
-        if (string.Equals(clientHintsBrowserName, ClientHintsBrowserNames.MicrosoftEdge))
-        {
-            return BrowserNames.Edge;
-        }
-
-        return clientHintsBrowserName;
+        return string.Equals(clientHintsBrowserName, ClientHintsBrowserNames.MicrosoftEdge) ? BrowserNames.Edge : clientHintsBrowserName;
     }
 
     public static string? GetEngineName(string? clientHintsEngineName)
     {
-        if (string.Equals(clientHintsEngineName, ClientHintsEngineNames.Chromium))
-        {
-            return EngineNames.Blink;
-        }
-
-        return clientHintsEngineName;
+        return string.Equals(clientHintsEngineName, ClientHintsEngineNames.Chromium) ? EngineNames.Blink : clientHintsEngineName;
     }
 
     public static string? GetClientHintsValueFromString(string? clientHintsValue)
     {
-        if (clientHintsValue != null)
-        {
-            return clientHintsValue.Trim().Trim('"');
-        }
-
-        return clientHintsValue;
+        return clientHintsValue != null ? clientHintsValue.Trim().Trim('"') : clientHintsValue;
     }
 }

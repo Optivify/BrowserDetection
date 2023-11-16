@@ -18,11 +18,6 @@ public class ClientHintsDeviceDetector : IClientHintsDeviceDetector
 
         var isMobile = userAgentMobile.Trim('?') == "1";
 
-        if (isMobile)
-        {
-            return new DeviceType(DeviceTypeNames.Mobile);
-        }
-
-        return null;
+        return isMobile ? new DeviceType(DeviceTypeNames.Mobile) : null;
     }
 }

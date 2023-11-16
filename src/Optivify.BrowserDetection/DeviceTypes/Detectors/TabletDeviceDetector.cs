@@ -1,12 +1,11 @@
-﻿using Optivify.BrowserDetection.DetectionData;
+﻿using System.Diagnostics.CodeAnalysis;
+using Optivify.BrowserDetection.DetectionData;
 using Optivify.BrowserDetection.Platforms;
 
 namespace Optivify.BrowserDetection.DeviceTypes.Detectors;
 
 public class TabletDeviceDetector : BaseDeviceDetector
 {
-    public const string TabletToken = "Tablet";
-
     public override int Order => DeviceDetectorOrders.Tablet;
 
     public override string DeviceType => DeviceTypeNames.Tablet;
@@ -15,7 +14,7 @@ public class TabletDeviceDetector : BaseDeviceDetector
     {
     }
 
-    public override bool TryParse(IPlatform platform, string? userAgent, out IDeviceType? device)
+    public override bool TryParse(IPlatform platform, string? userAgent, [NotNullWhen(true)] out IDeviceType? device)
     {
         if (platform.Name == PlatformNames.Android && 
             userAgent is not null && 
@@ -33,6 +32,6 @@ public class TabletDeviceDetector : BaseDeviceDetector
 
         device = null;
 
-        return true;
+        return false;
     }
 }

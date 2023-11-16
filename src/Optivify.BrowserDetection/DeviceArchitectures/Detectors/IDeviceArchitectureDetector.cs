@@ -1,4 +1,6 @@
-﻿namespace Optivify.BrowserDetection.DeviceArchitectures.Detectors;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Optivify.BrowserDetection.DeviceArchitectures.Detectors;
 
 public interface IDeviceArchitectureDetector
 {
@@ -6,5 +8,5 @@ public interface IDeviceArchitectureDetector
 
     string ArchitectureName { get; }
 
-    bool TryParse(string? userAgent, out IDeviceArchitecture? architecture);
+    bool TryParse(string? userAgent, [NotNullWhen(true)] out IDeviceArchitecture? architecture);
 }

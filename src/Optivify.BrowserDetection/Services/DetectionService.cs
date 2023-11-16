@@ -58,9 +58,9 @@ public class DetectionService : IDetectionService
 
     #region Client Hints Model
 
-    public Lazy<string> model;
+    public Lazy<string?> model;
 
-    public string Model => this.model.Value;
+    public string? Model => this.model.Value;
 
     #endregion
 
@@ -164,31 +164,31 @@ public class DetectionService : IDetectionService
         this.clientHintsBrowserDetector = clientHintsBrowserDetector;
         this.clientHintsDeviceDetector = clientHintsDeviceDetector;
 
-        this.clientHintsResolver = new Lazy<IClientHintsResolver>(() => { return clientHintsResolver; });
-        this.userAgentResolver = new Lazy<IUserAgentResolver>(() => { return userAgentResolver; });
+        this.clientHintsResolver = new Lazy<IClientHintsResolver>(() => clientHintsResolver);
+        this.userAgentResolver = new Lazy<IUserAgentResolver>(() => userAgentResolver);
 
         this.engineDetectors = engineDetectors;
-        this.engine = new Lazy<IEngine>(() => { return this.GetEngine(); });
+        this.engine = new Lazy<IEngine>(this.GetEngine);
 
         this.browserDetectors = browserDetectors;
-        this.browser = new Lazy<IBrowser>(() => { return this.GetBrowser(); });
+        this.browser = new Lazy<IBrowser>(this.GetBrowser);
 
         this.platformDetectors = platformDetectors;
-        this.platform = new Lazy<IPlatform>(() => { return this.GetPlatform(); });
+        this.platform = new Lazy<IPlatform>(this.GetPlatform);
 
         this.deviceDetectors = deviceDetectors;
-        this.device = new Lazy<IDeviceType>(() => { return this.GetDevice(); });
+        this.device = new Lazy<IDeviceType>(this.GetDevice);
 
         this.operatingSystemDetectors = operatingSystemDetectors;
-        this.operatingSystem = new Lazy<IDeviceOperatingSystem>(() => { return this.GetOperatingSystem(); });
+        this.operatingSystem = new Lazy<IDeviceOperatingSystem>(this.GetOperatingSystem);
 
         this.architectureDetectors = architectureDetectors;
-        this.architecture = new Lazy<IDeviceArchitecture>(() => { return this.GetArchitecture(); });
+        this.architecture = new Lazy<IDeviceArchitecture>(this.GetArchitecture);
 
-        this.devicePixelRatio = new Lazy<double?>(() => { return this.ClientHintsResolver.DevicePixelRatio; });
-        this.model = new Lazy<string>(() => { return this.ClientHintsResolver.UserAgentModel; });
-        this.viewportWidth = new Lazy<int?>(() => { return this.ClientHintsResolver.ViewportWidth; });
-        this.viewportHeight = new Lazy<int?>(() => { return this.ClientHintsResolver.ViewportHeight; });
+        this.devicePixelRatio = new Lazy<double?>(() => this.ClientHintsResolver.DevicePixelRatio);
+        this.model = new Lazy<string?>(() => this.ClientHintsResolver.UserAgentModel);
+        this.viewportWidth = new Lazy<int?>(() => this.ClientHintsResolver.ViewportWidth);
+        this.viewportHeight = new Lazy<int?>(() => this.ClientHintsResolver.ViewportHeight);
     }
 
     /// <summary>
@@ -209,17 +209,14 @@ public class DetectionService : IDetectionService
 
         var matches = PlatformRegex.Matches(userAgent);
 
-        if (matches.Count > 0)
+        if (matches.Count <= 0)
         {
-            var match = matches[0];
-
-            if (match.Groups.Count > 1)
-            {
-                return match.Groups[1].Value;
-            }
+            return string.Empty;
         }
 
-        return string.Empty;
+        var match = matches[0];
+
+        return match.Groups.Count > 1 ? match.Groups[1].Value : string.Empty;
     }
 
     protected virtual IEngine GetEngine()
@@ -229,20 +226,20 @@ public class DetectionService : IDetectionService
         {
             if (!string.IsNullOrEmpty(this.ClientHintsResolver.UserAgentFullVersionList))
             {
-                var engine = this.clientHintsEngineDetector.GetEngine(this.ClientHintsResolver.UserAgentFullVersionList);
+                var clientHintsEngine = this.clientHintsEngineDetector.GetEngine(this.ClientHintsResolver.UserAgentFullVersionList);
 
-                if (engine != null)
+                if (clientHintsEngine is not null)
                 {
-                    return engine;
+                    return clientHintsEngine;
                 }
             }
         }
 
         foreach (var engineDetector in this.engineDetectors.OrderBy(x => x.Order))
         {
-            if (engineDetector.TryParse(this.Browser, this.OperatingSystem, this.UserAgentResolver.UserAgent, out var engine) && engine != null)
+            if (engineDetector.TryParse(this.Browser, this.OperatingSystem, this.UserAgentResolver.UserAgent, out var detectedEngine))
             {
-                return engine;
+                return detectedEngine;
             }
         }
 
@@ -254,19 +251,19 @@ public class DetectionService : IDetectionService
         if (!this.BrowserDetectionOptions.SkipClientHintsDetection &&
             !string.IsNullOrEmpty(this.ClientHintsResolver.UserAgentFullVersionList))
         {
-            var browser = this.clientHintsBrowserDetector.GetBrowser(this.ClientHintsResolver.UserAgentFullVersionList);
+            var clientHintsBrowser = this.clientHintsBrowserDetector.GetBrowser(this.ClientHintsResolver.UserAgentFullVersionList);
 
-            if (browser != null)
+            if (clientHintsBrowser is not null)
             {
-                return browser;
+                return clientHintsBrowser;
             }
         }
 
         foreach (var browserDetector in this.browserDetectors.OrderBy(x => x.Order))
         {
-            if (browserDetector.TryParse(this.UserAgentResolver.UserAgent, out var browser) && browser != null)
+            if (browserDetector.TryParse(this.UserAgentResolver.UserAgent, out var detectedBrowser))
             {
-                return browser;
+                return detectedBrowser;
             }
         }
 
@@ -279,9 +276,9 @@ public class DetectionService : IDetectionService
 
         foreach (var platformDetector in this.platformDetectors.OrderBy(x => x.Order))
         {
-            if (platformDetector.TryParse(platformString, out var platform) && platform != null)
+            if (platformDetector.TryParse(platformString, out var detectedPlatform))
             {
-                return platform;
+                return detectedPlatform;
             }
         }
 
@@ -294,22 +291,20 @@ public class DetectionService : IDetectionService
         {
             if (!string.IsNullOrEmpty(this.ClientHintsResolver.UserAgentMobile))
             {
-                var device = this.clientHintsDeviceDetector.GetDevice(this.ClientHintsResolver.UserAgentMobile);
+                var clientHintsDevice = this.clientHintsDeviceDetector.GetDevice(this.ClientHintsResolver.UserAgentMobile);
 
-                if (device != null)
+                if (clientHintsDevice is not null)
                 {
-                    return device;
+                    return clientHintsDevice;
                 }
             }
         }
 
-        var platform = this.Platform;
-
         foreach (var deviceDetector in this.deviceDetectors.OrderBy(x => x.Order))
         {
-            if (deviceDetector.TryParse(platform, this.UserAgentResolver.UserAgent, out var device) && device != null)
+            if (deviceDetector.TryParse(this.Platform, this.UserAgentResolver.UserAgent, out var detectedPlatform))
             {
-                return device;
+                return detectedPlatform;
             }
         }
 
@@ -318,7 +313,7 @@ public class DetectionService : IDetectionService
 
     protected virtual IDeviceOperatingSystem GetOperatingSystem()
     {
-        if (this.ClientHintsResolver.UserAgentPlatform != null)
+        if (this.ClientHintsResolver.UserAgentPlatform is not null)
         {
             var userAgentPlatform = this.ClientHintsResolver.UserAgentPlatform.Trim('"');
             var version = this.ClientHintsResolver.UserAgentPlatformVersion ?? new Version();
@@ -326,13 +321,11 @@ public class DetectionService : IDetectionService
             return new DeviceOperatingSystem(userAgentPlatform, version);
         }
 
-        var platform = this.Platform;
-
         foreach (var operatingSystemDetector in this.operatingSystemDetectors.OrderBy(x => x.Order))
         {
-            if (operatingSystemDetector.TryParse(platform, this.UserAgentResolver.UserAgent, out var operatingSystem) && operatingSystem != null)
+            if (operatingSystemDetector.TryParse(this.Platform, this.UserAgentResolver.UserAgent, out var detectedOperatingSystem))
             {
-                return operatingSystem;
+                return detectedOperatingSystem;
             }
         }
 
@@ -341,13 +334,11 @@ public class DetectionService : IDetectionService
 
     protected virtual IDeviceArchitecture GetArchitecture()
     {
-        var platform = this.Platform;
-
         foreach (var architectureDetector in this.architectureDetectors.OrderBy(x => x.Order))
         {
-            if (architectureDetector.TryParse(this.UserAgentResolver.UserAgent, out var architecture) && architecture != null)
+            if (architectureDetector.TryParse(this.UserAgentResolver.UserAgent, out var detectedArchitecture))
             {
-                return architecture;
+                return detectedArchitecture;
             }
         }
 

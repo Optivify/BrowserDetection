@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.RegularExpressions;
 
 namespace Optivify.BrowserDetection.DeviceArchitectures.Detectors;
 
@@ -10,7 +11,7 @@ public abstract class BaseDeviceArchitectureDetector : IDeviceArchitectureDetect
 
     protected Regex? regex;
 
-    protected BaseDeviceArchitectureDetector(Dictionary<string, string>? architectures)
+    protected BaseDeviceArchitectureDetector(IReadOnlyDictionary<string, string>? architectures)
     {
         if (architectures == null || !architectures.TryGetValue(this.ArchitectureName, out var regexString) || string.IsNullOrEmpty(regexString))
         {
@@ -20,7 +21,7 @@ public abstract class BaseDeviceArchitectureDetector : IDeviceArchitectureDetect
         this.regex = new Regex(regexString, RegexOptions.Compiled);
     }
 
-    public virtual bool TryParse(string? userAgent, out IDeviceArchitecture? architecture)
+    public virtual bool TryParse(string? userAgent, [NotNullWhen(true)] out IDeviceArchitecture? architecture)
     {
         if (userAgent is not null && this.regex is not null && this.regex.IsMatch(userAgent))
         {

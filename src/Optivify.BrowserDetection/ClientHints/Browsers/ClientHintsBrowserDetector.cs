@@ -20,30 +20,27 @@ public class ClientHintsBrowserDetector : IClientHintsBrowserDetector
 
         var parts = clientHintsUserAgent.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
-        if (parts.Length > 0)
+        if (parts.Length <= 0)
         {
-            // Browser name and version
-            var browserNameParts = parts[2].Split(';');
-
-            if (browserNameParts.Length > 1)
-            {
-                var browserName = ClientHintsHelpers.GetBrowserName(ClientHintsHelpers.GetClientHintsValueFromString(browserNameParts[0]));
-                var versionString = VersionHelpers.GetClientHintsVersionString(ClientHintsHelpers.GetClientHintsValueFromString(browserNameParts[1]));
-
-                if (!string.IsNullOrEmpty(browserName))
-                {
-                    if (VersionHelpers.TryParseSafe(versionString, out var version) && version != null)
-                    {
-                        return new Browser(browserName, version);
-                    }
-                    else
-                    {
-                        return new Browser(browserName, new Version());
-                    }
-                }
-            }
+            return null;
         }
 
-        return null;
+        // Browser name and version
+        var browserNameParts = parts[2].Split(';');
+
+        if (browserNameParts.Length <= 1)
+        {
+            return null;
+        }
+
+        var browserName = ClientHintsHelpers.GetBrowserName(ClientHintsHelpers.GetClientHintsValueFromString(browserNameParts[0]));
+        var versionString = VersionHelpers.GetClientHintsVersionString(ClientHintsHelpers.GetClientHintsValueFromString(browserNameParts[1]));
+
+        if (string.IsNullOrEmpty(browserName))
+        {
+            return null;
+        }
+
+        return VersionHelpers.TryParseSafe(versionString, out var version) ? new Browser(browserName, version) : new Browser(browserName, new Version());
     }
 }

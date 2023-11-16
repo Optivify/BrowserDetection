@@ -6,9 +6,9 @@ public class BrowserDetectionOptions
 {
     public const string ConfigurationSectionName = "BrowserDetection";
 
-    public bool SkipClientHintsDetection { get; set; }
+    public bool SkipClientHintsDetection { get; init; }
 
-    public AcceptClientHintsOptions AcceptClientHints { get; set; } = new AcceptClientHintsOptions();
+    public AcceptClientHintsOptions AcceptClientHints { get; set; } = new();
 
-    public CriticalClientHintsOptions CriticalClientHints { get; set; } = new CriticalClientHintsOptions();
+    public CriticalClientHintsOptions CriticalClientHints { get; set; } = new();
 }

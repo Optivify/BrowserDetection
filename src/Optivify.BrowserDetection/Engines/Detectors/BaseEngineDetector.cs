@@ -1,4 +1,5 @@
-﻿using Optivify.BrowserDetection.Browsers;
+﻿using System.Diagnostics.CodeAnalysis;
+using Optivify.BrowserDetection.Browsers;
 using Optivify.BrowserDetection.DeviceOperatingSystems;
 using Optivify.BrowserDetection.Helpers;
 using System.Text.RegularExpressions;
@@ -13,7 +14,7 @@ public abstract class BaseEngineDetector : IEngineDetector
 
     protected Regex? regex;
 
-    protected BaseEngineDetector(Dictionary<string, string>? enginesRegularExpressions)
+    protected BaseEngineDetector(IReadOnlyDictionary<string, string>? enginesRegularExpressions)
     {
         if (enginesRegularExpressions == null || !enginesRegularExpressions.TryGetValue(this.EngineName, out var regexString) || string.IsNullOrEmpty(regexString))
         {
@@ -23,7 +24,7 @@ public abstract class BaseEngineDetector : IEngineDetector
         this.regex = new Regex(regexString, RegexOptions.Compiled);
     }
 
-    public virtual bool TryParse(IBrowser browser, IDeviceOperatingSystem operatingSystem, string? userAgent, out IEngine? engine)
+    public virtual bool TryParse(IBrowser browser, IDeviceOperatingSystem operatingSystem, string? userAgent, [NotNullWhen(true)] out IEngine? engine)
     {
         if (userAgent is null)
         {
@@ -32,7 +33,7 @@ public abstract class BaseEngineDetector : IEngineDetector
             return false;
         }
 
-        bool isBlink = false;
+        var isBlink = false;
 
         if (browser.Name == BrowserNames.Chrome)
         {
@@ -56,7 +57,8 @@ public abstract class BaseEngineDetector : IEngineDetector
 
             return true;
         }
-        else if (browser.Name == BrowserNames.Edge)
+
+        if (browser.Name == BrowserNames.Edge)
         {
             if (browser.Version.Major >= 79)
             {
@@ -78,16 +80,9 @@ public abstract class BaseEngineDetector : IEngineDetector
             {
                 var match = matches[0];
 
-                if (match.Groups.Count < 2 ||
-                    !VersionHelpers.TryParseSafe(match.Groups[1].ToString(), out var version) ||
-                    version == null)
-                {
-                    engine = new Engine(this.EngineName, new Version());
-                }
-                else
-                {
-                    engine = new Engine(this.EngineName, version);
-                }
+                engine = match.Groups.Count < 2 || !VersionHelpers.TryParseSafe(match.Groups[1].ToString(), out var version)
+                            ? new Engine(this.EngineName, new Version())
+                            : new Engine(this.EngineName, version);
 
                 return true;
             }

@@ -29,7 +29,7 @@ public interface IDetectionService
 
     double? DevicePixelRatio { get; }
 
-    string Model { get; }
+    string? Model { get; }
 
     int? ViewportWidth { get; }
 

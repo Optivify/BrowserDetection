@@ -1,9 +1,8 @@
-﻿namespace Optivify.BrowserDetection.Samples.Web.AspNetCore.Models
-{
-    public class HomeViewModel
-    {
-        public bool SkipClientHintsDetection { get; set; }
+﻿namespace Optivify.BrowserDetection.Samples.Web.AspNetCore.Models;
 
-        public string UserAgent { get; set; } = string.Empty;
-    }
+public class HomeViewModel
+{
+    public bool SkipClientHintsDetection { get; set; }
+
+    public string UserAgent { get; set; } = string.Empty;
 }

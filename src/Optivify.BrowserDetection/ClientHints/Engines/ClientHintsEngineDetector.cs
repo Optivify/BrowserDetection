@@ -20,32 +20,29 @@ public class ClientHintsEngineDetector : IClientHintsEngineDetector
 
         var parts = clientHintsUserAgent.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
-        if (parts.Length > 1)
+        if (parts.Length <= 1)
         {
-            // Engine name and version
-            var engineParts = parts[1].Split(';');
-
-            if (engineParts.Length > 1)
-            {
-                var engineName = ClientHintsHelpers.GetClientHintsValueFromString(engineParts[0]);
-                var versionString = VersionHelpers.GetClientHintsVersionString(engineParts[1].Trim());
-
-                if (!string.IsNullOrEmpty(engineName))
-                {
-                    engineName = ClientHintsHelpers.GetEngineName(engineName) ?? engineName;
-
-                    if (VersionHelpers.TryParseSafe(versionString, out var version) && version != null)
-                    {
-                        return new Engine(engineName, version);
-                    }
-                    else
-                    {
-                        return new Engine(engineName, new Version());
-                    }
-                }
-            }
+            return null;
         }
 
-        return null;
+        // Engine name and version
+        var engineParts = parts[1].Split(';');
+
+        if (engineParts.Length <= 1)
+        {
+            
+            return null;
+        }
+        var engineName = ClientHintsHelpers.GetClientHintsValueFromString(engineParts[0]);
+        var versionString = VersionHelpers.GetClientHintsVersionString(engineParts[1].Trim());
+
+        if (string.IsNullOrEmpty(engineName))
+        {
+            return null;
+        }
+
+        engineName = ClientHintsHelpers.GetEngineName(engineName) ?? engineName;
+
+        return VersionHelpers.TryParseSafe(versionString, out var version) ? new Engine(engineName, version) : new Engine(engineName, new Version());
     }
 }

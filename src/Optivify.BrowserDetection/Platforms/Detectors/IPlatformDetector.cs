@@ -1,4 +1,6 @@
-﻿namespace Optivify.BrowserDetection.Platforms.Detectors;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Optivify.BrowserDetection.Platforms.Detectors;
 
 public interface IPlatformDetector
 {
@@ -6,5 +8,5 @@ public interface IPlatformDetector
 
     string PlatformName { get; }
 
-    bool TryParse(string platformString, out IPlatform? platform);
+    bool TryParse(string platformString, [NotNullWhen(true)] out IPlatform? platform);
 }

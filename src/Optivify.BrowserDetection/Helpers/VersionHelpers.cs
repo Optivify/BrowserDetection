@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.RegularExpressions;
 
 namespace Optivify.BrowserDetection.Helpers;
 
@@ -10,12 +11,7 @@ public static class VersionHelpers
     {
         var matches = VersionRegex.Matches(platformString);
 
-        if (matches.Count > 0)
-        {
-            return matches[0].Value;
-        }
-
-        return null;
+        return matches.Count > 0 ? matches[0].Value : null;
     }
 
     public static string? GetClientHintsVersionString(string? clientHintsVersionString)
@@ -27,28 +23,18 @@ public static class VersionHelpers
 
         var parts = clientHintsVersionString.Split(new[] { '=' }, StringSplitOptions.RemoveEmptyEntries);
 
-        if (parts.Length != 2)
-        {
-            return string.Empty;
-        }
-
-        return parts[1].Trim('"');
+        return parts.Length != 2 ? string.Empty : parts[1].Trim('"');
     }
 
-    public static bool TryParseSafe(string? versionString, out Version? version)
+    public static bool TryParseSafe(string? versionString, [NotNullWhen(true)] out Version? version)
     {
         if (string.IsNullOrEmpty(versionString))
         {
-            version = new Version();
+            version = null;
 
             return false;
         }
 
-        if (!versionString.Contains("."))
-        {
-            return Version.TryParse(versionString + ".0", out version);
-        }
-
-        return Version.TryParse(versionString, out version);
+        return !versionString.Contains('.') ? Version.TryParse(versionString + ".0", out version) : Version.TryParse(versionString, out version);
     }
 }

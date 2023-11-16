@@ -1,4 +1,5 @@
-﻿using Optivify.BrowserDetection.DetectionData;
+﻿using System.Diagnostics.CodeAnalysis;
+using Optivify.BrowserDetection.DetectionData;
 using Optivify.BrowserDetection.Helpers;
 using Optivify.BrowserDetection.Platforms;
 
@@ -14,7 +15,7 @@ public class AndroidDetector : BaseDeviceOperatingSystemDetector
     {
     }
 
-    public override bool TryParse(IPlatform platform, string? userAgent, out IDeviceOperatingSystem? operatingSystem)
+    public override bool TryParse(IPlatform platform, string? userAgent, [NotNullWhen(true)] out IDeviceOperatingSystem? operatingSystem)
     {
         if (userAgent is not null && this.regex is not null)
         {
@@ -24,16 +25,9 @@ public class AndroidDetector : BaseDeviceOperatingSystemDetector
             {
                 var match = matches[0];
 
-                if (match.Groups.Count < 2 ||
-                    !VersionHelpers.TryParseSafe(match.Groups[1].ToString(), out var version) ||
-                    version == null)
-                {
-                    operatingSystem = new DeviceOperatingSystem(this.OperatingSystemName, new Version());
-                }
-                else
-                {
-                    operatingSystem = new DeviceOperatingSystem(this.OperatingSystemName, version);
-                }
+                operatingSystem = match.Groups.Count < 2 || !VersionHelpers.TryParseSafe(match.Groups[1].ToString(), out var version)
+                                    ? new DeviceOperatingSystem(this.OperatingSystemName, new Version())
+                                    : new DeviceOperatingSystem(this.OperatingSystemName, version);
 
                 return true;
             }

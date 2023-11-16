@@ -4,66 +4,65 @@ using Optivify.BrowserDetection.Services;
 using System.Diagnostics;
 using Microsoft.Extensions.Options;
 
-namespace Optivify.BrowserDetection.Samples.Web.AspNetCore.Controllers
+namespace Optivify.BrowserDetection.Samples.Web.AspNetCore.Controllers;
+
+public class HomeController : Controller
 {
-    public class HomeController : Controller
+    private readonly BrowserDetectionOptions browserDetectionOptions;
+
+    public HomeController(IOptions<BrowserDetectionOptions> options)
     {
-        private readonly BrowserDetectionOptions browserDetectionOptions;
+        this.browserDetectionOptions = options.Value;
+    }
 
-        public HomeController(IOptions<BrowserDetectionOptions> options)
+    public IActionResult Index()
+    {
+        var model = new HomeViewModel
         {
-            this.browserDetectionOptions = options.Value;
-        }
+            SkipClientHintsDetection = this.browserDetectionOptions.SkipClientHintsDetection,
+            UserAgent = Request.Headers["User-Agent"]
+        };
 
-        public IActionResult Index()
+        return View(model);
+    }
+
+    /// <summary>
+    /// Detect custom user agent
+    /// </summary>
+    /// <param name="userAgent"></param>
+    /// <returns></returns>
+    [HttpPost]
+    public IActionResult Index(string userAgent)
+    {
+        Request.Headers["User-Agent"] = userAgent;
+        var detectionService = HttpContext.RequestServices.GetRequiredService<IDetectionService>();
+
+        var customBrowserDetectionOptions = new BrowserDetectionOptions
         {
-            var model = new HomeViewModel
-            {
-                SkipClientHintsDetection = this.browserDetectionOptions.SkipClientHintsDetection,
-                UserAgent = Request.Headers["User-Agent"]
-            };
+            SkipClientHintsDetection = this.browserDetectionOptions.SkipClientHintsDetection,
+            AcceptClientHints = this.browserDetectionOptions.AcceptClientHints,
+            CriticalClientHints = this.browserDetectionOptions.CriticalClientHints
+        };
 
-            return View(model);
-        }
+        detectionService.SetBrowserDetectionOptions(customBrowserDetectionOptions);
 
-        /// <summary>
-        /// Detect custom user agent
-        /// </summary>
-        /// <param name="userAgent"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public IActionResult Index(string userAgent)
+        var model = new HomeViewModel
         {
-            base.Request.Headers["User-Agent"] = userAgent;
-            var detectionService = base.HttpContext.RequestServices.GetRequiredService<IDetectionService>();
+            SkipClientHintsDetection = this.browserDetectionOptions.SkipClientHintsDetection,
+            UserAgent = userAgent
+        };
 
-            var customBrowserDetectionOptions = new BrowserDetectionOptions
-            {
-                SkipClientHintsDetection = this.browserDetectionOptions.SkipClientHintsDetection,
-                AcceptClientHints = this.browserDetectionOptions.AcceptClientHints,
-                CriticalClientHints = this.browserDetectionOptions.CriticalClientHints
-            };
+        return View(model);
+    }
 
-            detectionService.SetBrowserDetectionOptions(customBrowserDetectionOptions);
+    public IActionResult Privacy()
+    {
+        return View();
+    }
 
-            var model = new HomeViewModel
-            {
-                SkipClientHintsDetection = this.browserDetectionOptions.SkipClientHintsDetection,
-                UserAgent = userAgent
-            };
-
-            return View(model);
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    public IActionResult Error()
+    {
+        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }

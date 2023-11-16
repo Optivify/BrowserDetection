@@ -1,4 +1,6 @@
-﻿namespace Optivify.BrowserDetection.Browsers.Detectors;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Optivify.BrowserDetection.Browsers.Detectors;
 
 public interface IBrowserDetector
 {
@@ -6,5 +8,5 @@ public interface IBrowserDetector
 
     string BrowserName { get; }
 
-    bool TryParse(string? userAgent, out IBrowser? browser);
+    bool TryParse(string? userAgent, [NotNullWhen(true)] out IBrowser? browser);
 }
