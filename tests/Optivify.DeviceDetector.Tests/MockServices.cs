@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
 using Moq;
 using Optivify.DeviceDetector.Browsers.Detectors;
+using Optivify.DeviceDetector.Capabilities;
+using Optivify.DeviceDetector.Capabilities.Avif;
 using Optivify.DeviceDetector.ClientHints;
 using Optivify.DeviceDetector.ClientHints.Browsers;
 using Optivify.DeviceDetector.ClientHints.Devices;
@@ -135,4 +137,22 @@ internal static class MockServices
     }
 
     #endregion
+
+    internal static ICapabilityService GetMockedCapabilityService(string clientHintsUserAgent, string userAgent)
+    {
+        var capabilityRegistry = GetMockedCapabilityRegistry();
+        var detectionService = GetMockedDetectionService(clientHintsUserAgent, userAgent);
+
+        return new CapabilityService(capabilityRegistry, detectionService);
+    }
+
+    internal static ICapabilityRegistry GetMockedCapabilityRegistry()
+    {
+        return new CapabilityRegistry(GetCapabilities());
+    }
+
+    internal static IEnumerable<ICapability> GetCapabilities()
+    {
+        yield return new AvifCapability();
+    }
 }

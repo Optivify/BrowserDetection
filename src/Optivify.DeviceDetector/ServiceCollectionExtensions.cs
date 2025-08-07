@@ -78,6 +78,10 @@ public static class ServiceCollectionExtensions
             .AddArchitectureDetector<x86_64ArchitectureDetector>()
             .AddArchitectureDetector<x86ArchitectureDetector>();
 
+        builder
+            .ConfigureCapabilityServices()
+            .ConfigureBuiltinCapabilities();
+
         return builder;
     }
 }
