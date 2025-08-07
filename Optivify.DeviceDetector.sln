@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32901.215
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "benchmarks", "benchmarks", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{4F14202B-FA51-439A-8E7B-221AC2A7E7C6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{C59BABBF-3963-4787-AF43-FE2D34BC5A35}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Optivify.DeviceDetector", "src\Optivify.DeviceDetector\Optivify.DeviceDetector.csproj", "{05644BBA-6145-C774-ACA8-0065C961EB1D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Optivify.DeviceDetector.Tests", "tests\Optivify.DeviceDetector.Tests\Optivify.DeviceDetector.Tests.csproj", "{548CC4C3-D10F-435D-F3BC-3B44DBE1DFED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Optivify.DeviceDetector.Sample", "samples\Optivify.DeviceDetector.Sample\Optivify.DeviceDetector.Sample.csproj", "{A0F35C4A-BBEA-B4D1-EDCA-C208CD6C8094}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Optivify.DeviceDetector.Benchmark", "benchmarks\Optivify.DeviceDetector.Benchmark\Optivify.DeviceDetector.Benchmark.csproj", "{B35DB29F-4568-BD20-6D19-5A361710AC09}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{05644BBA-6145-C774-ACA8-0065C961EB1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05644BBA-6145-C774-ACA8-0065C961EB1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05644BBA-6145-C774-ACA8-0065C961EB1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05644BBA-6145-C774-ACA8-0065C961EB1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{548CC4C3-D10F-435D-F3BC-3B44DBE1DFED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{548CC4C3-D10F-435D-F3BC-3B44DBE1DFED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{548CC4C3-D10F-435D-F3BC-3B44DBE1DFED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{548CC4C3-D10F-435D-F3BC-3B44DBE1DFED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0F35C4A-BBEA-B4D1-EDCA-C208CD6C8094}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0F35C4A-BBEA-B4D1-EDCA-C208CD6C8094}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0F35C4A-BBEA-B4D1-EDCA-C208CD6C8094}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0F35C4A-BBEA-B4D1-EDCA-C208CD6C8094}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B35DB29F-4568-BD20-6D19-5A361710AC09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B35DB29F-4568-BD20-6D19-5A361710AC09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B35DB29F-4568-BD20-6D19-5A361710AC09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B35DB29F-4568-BD20-6D19-5A361710AC09}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{548CC4C3-D10F-435D-F3BC-3B44DBE1DFED} = {C59BABBF-3963-4787-AF43-FE2D34BC5A35}
+		{A0F35C4A-BBEA-B4D1-EDCA-C208CD6C8094} = {4F14202B-FA51-439A-8E7B-221AC2A7E7C6}
+		{B35DB29F-4568-BD20-6D19-5A361710AC09} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {68B40747-DE2C-4F02-B54D-FC7B42F4E686}
+	EndGlobalSection
+EndGlobal

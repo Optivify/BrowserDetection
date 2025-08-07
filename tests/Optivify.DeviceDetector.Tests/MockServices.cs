@@ -1,0 +1,138 @@
+﻿using Microsoft.Extensions.Options;
+using Moq;
+using Optivify.DeviceDetector.Browsers.Detectors;
+using Optivify.DeviceDetector.ClientHints;
+using Optivify.DeviceDetector.ClientHints.Browsers;
+using Optivify.DeviceDetector.ClientHints.Devices;
+using Optivify.DeviceDetector.ClientHints.Engines;
+using Optivify.DeviceDetector.DeviceArchitectures.Detectors;
+using Optivify.DeviceDetector.DeviceOperatingSystems.Detectors;
+using Optivify.DeviceDetector.DeviceTypes.Detectors;
+using Optivify.DeviceDetector.Engines.Detectors;
+using Optivify.DeviceDetector.Platforms.Detectors;
+using Optivify.DeviceDetector.Services;
+using Optivify.DeviceDetector.UserAgents;
+
+namespace Optivify.DeviceDetector.Tests;
+
+internal static class MockServices
+{
+    #region Client Hints User Agent Resolver
+
+    internal static IClientHintsResolver GetMockedClientHintsUserAgentResolver(string clientHintsUserAgent)
+    {
+        return MockClientHintsUserAgentResolver(clientHintsUserAgent).Object;
+    }
+
+    internal static Mock<IClientHintsResolver> MockClientHintsUserAgentResolver(string userClientHintsUserAgent)
+    {
+        var resolver = new Mock<IClientHintsResolver>();
+        resolver.Setup(a => a.UserAgent).Returns(userClientHintsUserAgent);
+
+        return resolver;
+    }
+
+    #endregion
+
+    #region User Agent Resolver
+
+    internal static IUserAgentResolver GetMockedUserAgentResolver(string userAgent)
+    {
+        return MockUserAgentResolver(userAgent).Object;
+    }
+
+    internal static Mock<IUserAgentResolver> MockUserAgentResolver(string userAgent)
+    {
+        var resolver = new Mock<IUserAgentResolver>();
+        resolver.Setup(a => a.UserAgent).Returns(userAgent);
+
+        return resolver;
+    }
+
+    #endregion
+
+    #region Detection Service
+
+    internal static IDetectionService GetMockedDetectionService(string clientHintsUserAgent, string userAgent)
+    {
+        return GetMockedDetectionService(GetMockedClientHintsUserAgentResolver(clientHintsUserAgent), GetMockedUserAgentResolver(userAgent));
+    }
+
+    internal static IDetectionService GetMockedDetectionService(IClientHintsResolver clientHintsUserAgentResolver, IUserAgentResolver userAgentResolver)
+    {
+        var detectionDataLoader = new DetectionData.DetectionDataLoader();
+
+        var clientHintsEngineDetector = new ClientHintsEngineDetector();
+        var clientHintsBrowserDetector = new ClientHintsBrowserDetector();
+        var clientHintsDeviceDetector = new ClientHintsDeviceDetector();
+
+        var engineDetectors = new IEngineDetector[]
+        {
+            new BlinkEngineDetector(detectionDataLoader),
+            new WebKitEngineDetector(detectionDataLoader),
+            new GeckoEngineDetector(detectionDataLoader)
+        };
+
+        var browserDetectors = new IBrowserDetector[]
+        {
+            new EdgeBrowserDetector(detectionDataLoader),
+            new ChromeBrowserDetector(detectionDataLoader),
+            new SafariBrowserDetector(detectionDataLoader),
+            new SamsungBrowserDetector(detectionDataLoader),
+            new FirefoxBrowserDetector(detectionDataLoader),
+            new OperaBrowserDetector(detectionDataLoader)
+        };
+
+        var platformDetectors = new IPlatformDetector[]
+        {
+            new AndroidPlatformDetector(detectionDataLoader),
+            new iPadPlatformDetector(detectionDataLoader),
+            new iPhonePlatformDetector(detectionDataLoader),
+            new LinuxPlatformDetector(detectionDataLoader),
+            new MacintoshPlatformDetector(detectionDataLoader),
+            new WindowsPlatformDetector(detectionDataLoader)
+        };
+
+        var deviceTypeDetectors = new IDeviceTypeDetector[]
+        {
+            new DesktopDeviceDetector(detectionDataLoader),
+            new MobileDeviceDetector(detectionDataLoader),
+            new TabletDeviceDetector(detectionDataLoader)
+        };
+
+        var deviceOperatingSystemDetectors = new IDeviceOperatingSystemDetector[]
+        {
+            new AndroidDetector(detectionDataLoader),
+            new iOSDetector(detectionDataLoader),
+            new LinuxDetector(detectionDataLoader),
+            new MacintoshDetector(detectionDataLoader),
+            new WindowsDetector(detectionDataLoader)
+        };
+
+        var deviceArchitectureDetectors = new IDeviceArchitectureDetector[]
+        {
+            new ARMArchitectureDetector(detectionDataLoader),
+            new x86_64ArchitectureDetector(detectionDataLoader),
+            new x86ArchitectureDetector(detectionDataLoader)
+        };
+
+        return new DetectionService(
+            Options.Create(new DeviceDetectorOptions()),
+
+            clientHintsEngineDetector,
+            clientHintsBrowserDetector,
+            clientHintsDeviceDetector,
+
+            clientHintsUserAgentResolver,
+            userAgentResolver,
+
+            engineDetectors,
+            browserDetectors,
+            platformDetectors,
+            deviceTypeDetectors,
+            deviceOperatingSystemDetectors,
+            deviceArchitectureDetectors);
+    }
+
+    #endregion
+}

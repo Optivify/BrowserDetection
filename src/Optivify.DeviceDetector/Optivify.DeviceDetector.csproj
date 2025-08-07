@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	<TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
+	<ImplicitUsings>enable</ImplicitUsings>
+	<Nullable>enable</Nullable>
+	<LangVersion>latest</LangVersion>
+	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	<Description>An extensible tool that uses client hints and user agent for detecting browser, device types, platform, architecture and operating system.</Description>
+	<PackageTags>browser device platform engine detection detector</PackageTags>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	<PackageProjectUrl>https://github.com/Optivify/BrowserDetection</PackageProjectUrl>
+	<RepositoryUrl>https://github.com/Optivify/BrowserDetection</RepositoryUrl>
+	<AssemblyVersion>8.0.0</AssemblyVersion>
+	<Version>$(AssemblyVersion)</Version>
+	<Authors>Optivify</Authors>
+	<Company>Optivify</Company>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(TargetFrameworkIdentifier)' == '.NETCoreApp' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '3.0')) ">
+	<FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<EmbeddedResource Include="DetectionData\detection-data.json" />
+  </ItemGroup>
+
+</Project>
