@@ -1,5 +1,16 @@
 {
   "Version": "1.0",
+  "Bots": {
+    "SearchEngine": "Googlebot|Bingbot|BingPreview|Yandex(Bot|Images)|Baiduspider|DuckDuckBot|Sogou|Exabot|SeznamBot|CocCocBot|Applebot",
+    "PerformanceMonitoringTool": "UptimeBot|Pingdom|Lighthouse|Chrome-Lighthouse|PageSpeed|WebPageTest|SiteSpeed|SpeedCurve|Site24x7|StatusCake|GTmetrix",
+    "SeoTool": "MJ12bot|Ahrefs(Bot)?|Semrush(Bot)?|LinkdexBot|DotBot|Majestic12|RogerBot|Siteimprove",
+    "Headless": "HeadlessChrome|PhantomJS|Selenium|Puppeteer|Playwright|NightmareJS",
+    "HttpClient": "HttpClient|Libwww-Perl|Jakarta|Wget|Curl|Python-Requests|Aiohttp|Http_Request2|OkHttp|Java|Go-Http-Client|PHPCrawl|HttpLib|Urllib|Mechanize",
+    "SoMeLinkPreview": "FacebookExternalHit|Facebot|Pinterest(Bot)?|DiscordBot|Slackbot|TweetmemeBot|LinkedInBot|TelegramBot",
+    "AdsFetcher": "Mediapartners-Google|AdsBot|AdIdxBot|FeedFetcher-Google|RSSBot|NewsBot",
+    "Archiver": "IA_Archiver|Archive\\.org_Bot|Dataprovider\\.com|CommonCrawl",
+    "Others": "Bot|Crawler|Crawl|Spider|Scraper|Fetch|Parser|Nutch|Yeti|Scrapy|Cloudflare-AMP|Check_HTTP|Zabbix|HubSpot|MarketGoo|SerpstatBot|DotMetricsBot"
+  },
   "Browsers": {
     "Edge": "(?:Edg|EdgiOS|EdgA|Edge)\/([.0-9]*)",
     "Chrome": "(?:CriOS|Chrome)\/([.0-9]*)",
@@ -31,10 +42,6 @@
       "SamsungTablet": "SAMSUNG.*Tablet|Galaxy.*Tab",
       "Nexus": "Android.*Nexus[\\s]+(7|9|10)",
       "Google": "Android.*Pixel C"
-    },
-    "Bot": {
-      "Bot": "bot|Googlebot|facebookexternalhit|Google-AMPHTML|s~amp-validator|AdsBot-Google|Google Keyword Suggestion|Facebot|YandexBot|YandexMobileBot|bingbot|ia_archiver|AhrefsBot|Ezooms|GSLFbot|WBSearchBot|Twitterbot|TweetmemeBot|Twikle|PaperLiBot|Wotbox|UnwindFetchor|Exabot|MJ12bot|YandexImages|TurnitinBot|Pingdom|contentkingapp|AspiegelBot",
-      "MobileBot": "Googlebot-Mobile|AdsBot-Google-Mobile|YahooSeeker/M1A1-R2D2"
     }
   },
   "OperatingSystems": {

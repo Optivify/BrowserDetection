@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Optivify.DeviceDetector.Bots.Detectors;
 using Optivify.DeviceDetector.Browsers.Detectors;
 using Optivify.DeviceDetector.ClientHints;
 using Optivify.DeviceDetector.ClientHints.Browsers;
@@ -93,6 +94,18 @@ public static class DeviceDetectorBuilderExtensions
         where TEngineDetector : class, IEngineDetector
     {
         builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IEngineDetector, TEngineDetector>());
+
+        return builder;
+    }
+
+    #endregion
+
+    #region Bot Detector
+
+    public static DeviceDetectorBuilder AddBotDetector<TBotDetector>(this DeviceDetectorBuilder builder)
+        where TBotDetector : class, IBotDetector
+    {
+        builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IBotDetector, TBotDetector>());
 
         return builder;
     }

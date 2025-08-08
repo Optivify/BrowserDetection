@@ -4,6 +4,8 @@ public class DetectionDataModel
 {
     public string? Version { get; set; }
 
+    public Dictionary<string, string>? Bots { get; set; }
+
     public Dictionary<string, string>? Browsers { get; set; }
 
     public Dictionary<string, string>? Engines { get; set; }

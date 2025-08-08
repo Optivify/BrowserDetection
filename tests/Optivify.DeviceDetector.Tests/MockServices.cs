@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Moq;
+using Optivify.DeviceDetector.Bots.Detectors;
 using Optivify.DeviceDetector.Browsers.Detectors;
 using Optivify.DeviceDetector.Capabilities;
 using Optivify.DeviceDetector.Capabilities.Avif;
@@ -75,6 +76,19 @@ internal static class MockServices
             new GeckoEngineDetector(detectionDataLoader)
         };
 
+        var botDetectors = new IBotDetector[]
+        {
+            new SearchEngineBotDetector(detectionDataLoader),
+            new PerformanceMonitoringToolBotDetector(detectionDataLoader),
+            new SeoToolBotDetector(detectionDataLoader),
+            new HeadlessBotDetector(detectionDataLoader),
+            new HttpClientBotDetector(detectionDataLoader),
+            new SoMeLinkPreviewBotDetector(detectionDataLoader),
+            new AdsFetcherBotDetector(detectionDataLoader),
+            new ArchiverBotDetector(detectionDataLoader),
+            new OthersBotDetector(detectionDataLoader)
+        };
+
         var browserDetectors = new IBrowserDetector[]
         {
             new EdgeBrowserDetector(detectionDataLoader),
@@ -128,6 +142,7 @@ internal static class MockServices
             clientHintsUserAgentResolver,
             userAgentResolver,
 
+            botDetectors,
             engineDetectors,
             browserDetectors,
             platformDetectors,

@@ -1,6 +1,7 @@
 ﻿using BenchmarkDotNet.Attributes;
 using Microsoft.Extensions.Options;
 using Moq;
+using Optivify.DeviceDetector.Bots.Detectors;
 using Optivify.DeviceDetector.Browsers.Detectors;
 using Optivify.DeviceDetector.ClientHints;
 using Optivify.DeviceDetector.ClientHints.Browsers;
@@ -35,6 +36,8 @@ public class DetectionServiceBenchmarks
 
     private readonly ClientHintsDeviceDetector _clientHintsDeviceDetector;
 
+    private readonly IBotDetector[] _botDetectors;
+
     private readonly IEngineDetector[] _engineDetectors;
 
     private readonly IBrowserDetector[] _browserDetectors;
@@ -56,6 +59,19 @@ public class DetectionServiceBenchmarks
         _clientHintsEngineDetector = new ClientHintsEngineDetector();
         _clientHintsBrowserDetector = new ClientHintsBrowserDetector();
         _clientHintsDeviceDetector = new ClientHintsDeviceDetector();
+
+        _botDetectors =
+        [
+            new SearchEngineBotDetector(_detectionDataLoader),
+            new PerformanceMonitoringToolBotDetector(_detectionDataLoader),
+            new SeoToolBotDetector(_detectionDataLoader),
+            new HeadlessBotDetector(_detectionDataLoader),
+            new HttpClientBotDetector(_detectionDataLoader),
+            new SoMeLinkPreviewBotDetector(_detectionDataLoader),
+            new AdsFetcherBotDetector(_detectionDataLoader),
+            new ArchiverBotDetector(_detectionDataLoader),
+            new OthersBotDetector(_detectionDataLoader)
+        ];
 
         _engineDetectors =
         [
@@ -129,6 +145,7 @@ public class DetectionServiceBenchmarks
 
             GetMockClientHintsResolver(clientHintsUserAgent),
             mockUserAgentResolver.Object,
+            _botDetectors,
             _engineDetectors,
             _browserDetectors,
             _platformDetectors,

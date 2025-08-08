@@ -1,4 +1,5 @@
-﻿using Optivify.DeviceDetector.Browsers;
+﻿using Optivify.DeviceDetector.Bots;
+using Optivify.DeviceDetector.Browsers;
 using Optivify.DeviceDetector.ClientHints;
 using Optivify.DeviceDetector.DeviceArchitectures;
 using Optivify.DeviceDetector.DeviceOperatingSystems;
@@ -15,6 +16,8 @@ public interface IDetectionService
 
     IUserAgentResolver UserAgentResolver { get; }
 
+    IBot? Bot { get; }
+
     IEngine Engine { get; }
 
     IBrowser Browser { get; }
@@ -26,6 +29,8 @@ public interface IDetectionService
     IDeviceOperatingSystem OperatingSystem { get; }
 
     IDeviceArchitecture Architecture { get; }
+
+    bool IsBot => Bot is not null;
 
     double? DevicePixelRatio { get; }
 

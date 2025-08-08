@@ -10,7 +10,5 @@ public class DeviceTypeNames
 
     public const string Bot = "Bot";
 
-    public const string MobileBot = "MobileBot";
-
     public const string Others = "Others";
 }

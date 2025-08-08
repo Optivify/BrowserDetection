@@ -1,4 +1,5 @@
-﻿using Optivify.DeviceDetector.Browsers;
+﻿using Optivify.DeviceDetector.Bots;
+using Optivify.DeviceDetector.Browsers;
 using Optivify.DeviceDetector.DeviceOperatingSystems;
 using Optivify.DeviceDetector.DeviceTypes;
 using Optivify.DeviceDetector.Engines;
@@ -134,6 +135,7 @@ public class DetectionServiceTests
         Assert.AreEqual(device, service.Device.Type);
         Assert.AreEqual(os, service.OperatingSystem.Name);
         Assert.AreEqual(osVersion, service.OperatingSystem.Version.ToString());
+        Assert.AreEqual(false, service.IsBot);
     }
 
     #endregion
@@ -212,6 +214,7 @@ public class DetectionServiceTests
         Assert.AreEqual(device, service.Device.Type);
         Assert.AreEqual(os, service.OperatingSystem.Name);
         Assert.AreEqual(osVersion, service.OperatingSystem.Version.ToString());
+        Assert.AreEqual(false, service.IsBot);
     }
 
     #endregion
@@ -274,6 +277,7 @@ public class DetectionServiceTests
         Assert.AreEqual(device, service.Device.Type);
         Assert.AreEqual(os, service.OperatingSystem.Name);
         Assert.AreEqual(osVersion, service.OperatingSystem.Version.ToString());
+        Assert.AreEqual(false, service.IsBot);
     }
 
     #endregion
@@ -310,6 +314,36 @@ public class DetectionServiceTests
         Assert.AreEqual(device, service.Device.Type);
         Assert.AreEqual(os, service.OperatingSystem.Name);
         Assert.AreEqual(osVersion, service.OperatingSystem.Version.ToString());
+        Assert.AreEqual(false, service.IsBot);
+    }
+
+    #endregion
+
+    #region Google Bot
+
+    [TestMethod]
+    // Google Bot
+    [DataRow(
+        "Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.6877.0 Mobile Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
+        BotTypes.SearchEngine)]
+    // Google Lighthouse
+    [DataRow(
+        "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Mobile Safari/537.36 Chrome-Lighthouse TreoWorker/12.2.1",
+        BotTypes.PerformanceMonitoringTool)]
+    // SpeedCurve
+    [DataRow(
+        "Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4664.9 Mobile Safari/537.36 PTST/SpeedCurve/240813.160801",
+        BotTypes.PerformanceMonitoringTool)]
+    public void Bot(
+        string userAgent,
+        string botType)
+    {
+        var service = MockServices.GetMockedDetectionService(string.Empty, userAgent);
+
+        Assert.IsNotNull(service);
+        Assert.IsNotNull(service.Bot);
+        Assert.AreEqual(true, service.IsBot);
+        Assert.AreEqual(botType, service.Bot.BotType);
     }
 
     #endregion

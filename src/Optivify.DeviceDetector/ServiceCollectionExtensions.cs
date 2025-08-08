@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Optivify.DeviceDetector.Bots.Detectors;
 using Optivify.DeviceDetector.Browsers.Detectors;
 using Optivify.DeviceDetector.Capabilities;
 using Optivify.DeviceDetector.ClientHints.Browsers;
@@ -43,6 +44,17 @@ public static class ServiceCollectionExtensions
             .AddEngineDetector<WebKitEngineDetector>()
             .AddEngineDetector<GeckoEngineDetector>()
 
+            // Bot detectors
+            .AddBotDetector<SearchEngineBotDetector>()
+            .AddBotDetector<PerformanceMonitoringToolBotDetector>()
+            .AddBotDetector<SeoToolBotDetector>()
+            .AddBotDetector<HeadlessBotDetector>()
+            .AddBotDetector<HttpClientBotDetector>()
+            .AddBotDetector<SoMeLinkPreviewBotDetector>()
+            .AddBotDetector<AdsFetcherBotDetector>()
+            .AddBotDetector<ArchiverBotDetector>()
+            .AddBotDetector<OthersBotDetector>()
+
             // Browser detectors
             .AddBrowserDetector<EdgeBrowserDetector>()
             .AddBrowserDetector<ChromeBrowserDetector>()
@@ -63,8 +75,6 @@ public static class ServiceCollectionExtensions
             .AddDeviceTypeDetector<MobileDeviceDetector>()
             .AddDeviceTypeDetector<DesktopDeviceDetector>()
             .AddDeviceTypeDetector<TabletDeviceDetector>()
-            .AddDeviceTypeDetector<BotDeviceDetector>()
-            .AddDeviceTypeDetector<MobileBotDeviceDetector>()
 
             // Operating System detectors
             .AddOperatingSystemDetector<AndroidDetector>()

@@ -1,5 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using Microsoft.Extensions.Options;
+using Optivify.DeviceDetector.Bots;
+using Optivify.DeviceDetector.Bots.Detectors;
 using Optivify.DeviceDetector.Browsers;
 using Optivify.DeviceDetector.Browsers.Detectors;
 using Optivify.DeviceDetector.ClientHints;
@@ -80,6 +82,18 @@ public class DetectionService : IDetectionService
 
     #endregion
 
+    #region Bot
+
+    private readonly IEnumerable<IBotDetector> _botDetectors;
+
+    private readonly Lazy<IBot?> _bot;
+
+    public IBot? Bot => _bot.Value;
+
+    public bool IsBot => _bot.Value is not null;
+
+    #endregion
+
     #region Engine
 
     private readonly IEnumerable<IEngineDetector> _engineDetectors;
@@ -150,6 +164,7 @@ public class DetectionService : IDetectionService
         IClientHintsResolver clientHintsResolver,
         IUserAgentResolver userAgentResolver,
 
+        IEnumerable<IBotDetector> botDetectors,
         IEnumerable<IEngineDetector> engineDetectors,
         IEnumerable<IBrowserDetector> browserDetectors,
         IEnumerable<IPlatformDetector> platformDetectors,
@@ -172,6 +187,9 @@ public class DetectionService : IDetectionService
         _clientHintModel = new Lazy<string?>(() => ClientHintsResolver.UserAgentModel);
         _clientHintViewportWidth = new Lazy<int?>(() => ClientHintsResolver.ViewportWidth);
         _clientHintViewportHeight = new Lazy<int?>(() => ClientHintsResolver.ViewportHeight);
+
+        _botDetectors = botDetectors;
+        _bot = new Lazy<IBot?>(GetBot);
 
         _engineDetectors = engineDetectors;
         _engine = new Lazy<IEngine>(GetEngine);
@@ -218,6 +236,19 @@ public class DetectionService : IDetectionService
         var match = matches[0];
 
         return match.Groups.Count > 1 ? match.Groups[1].Value : string.Empty;
+    }
+
+    protected virtual IBot? GetBot()
+    {
+        foreach (var botDetector in _botDetectors.OrderBy(x => x.Order))
+        {
+            if (botDetector.TryParse(UserAgentResolver.UserAgent, out var detectedBot))
+            {
+                return detectedBot;
+            }
+        }
+
+        return null;
     }
 
     protected virtual IEngine GetEngine()

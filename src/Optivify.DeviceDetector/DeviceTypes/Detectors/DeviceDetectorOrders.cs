@@ -7,8 +7,4 @@ public static class DeviceDetectorOrders
     public const int Desktop = 20;
 
     public const int Tablet = 30;
-
-    public const int Bot = 40;
-
-    public const int MobileBot = 50;
 }

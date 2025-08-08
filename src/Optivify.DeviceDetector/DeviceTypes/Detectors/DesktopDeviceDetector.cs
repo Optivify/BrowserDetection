@@ -4,15 +4,12 @@ using Optivify.DeviceDetector.Platforms;
 
 namespace Optivify.DeviceDetector.DeviceTypes.Detectors;
 
-public class DesktopDeviceDetector : BaseDeviceDetector
+public class DesktopDeviceDetector(IDetectionDataLoader detectionDataLoader)
+    : BaseDeviceDetector(detectionDataLoader.GetCapabilityData().Devices)
 {
     public override int Order => DeviceDetectorOrders.Desktop;
 
     public override string DeviceType => DeviceTypeNames.Desktop;
-
-    public DesktopDeviceDetector(IDetectionDataLoader detectionDataLoader) : base(detectionDataLoader.GetCapabilityData().Devices)
-    {
-    }
 
     public override bool TryParse(IPlatform platform, string? userAgent, [NotNullWhen(true)] out IDeviceType? device)
     {
