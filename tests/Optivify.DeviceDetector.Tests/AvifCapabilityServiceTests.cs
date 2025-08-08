@@ -101,7 +101,7 @@ public class AvifCapabilityServiceTests
     {
         var service = MockServices.GetMockedCapabilityService(clientHintsUserAgent, userAgent);
 
-        Assert.AreEqual(isSupported, service.HasCapability(AvifCapability.CapabilitySpecification));
+        Assert.AreEqual(isSupported, service.HasCapability<AvifCapability>());
     }
 
     #endregion
@@ -159,7 +159,7 @@ public class AvifCapabilityServiceTests
     {
         var service = MockServices.GetMockedCapabilityService(clientHintsUserAgent, userAgent);
 
-        Assert.AreEqual(isSupported, service.HasCapability(AvifCapability.CapabilitySpecification));
+        Assert.AreEqual(isSupported, service.HasCapability<AvifCapability>());
     }
 
     #endregion
@@ -210,7 +210,7 @@ public class AvifCapabilityServiceTests
     {
         var service = MockServices.GetMockedCapabilityService(clientHintsUserAgent, userAgent);
 
-        Assert.AreEqual(isSupported, service.HasCapability(AvifCapability.CapabilitySpecification));
+        Assert.AreEqual(isSupported, service.HasCapability<AvifCapability>());
     }
 
     #endregion
@@ -233,7 +233,7 @@ public class AvifCapabilityServiceTests
     {
         var service = MockServices.GetMockedCapabilityService(clientHintsUserAgent, userAgent);
 
-        Assert.AreEqual(isSupported, service.HasCapability(AvifCapability.CapabilitySpecification));
+        Assert.AreEqual(isSupported, service.HasCapability<AvifCapability>());
     }
 
     #endregion

@@ -2,11 +2,11 @@
 
 namespace Optivify.DeviceDetector.Capabilities;
 
-public  class CapabilityService(ICapabilityRegistry capabilityRegistry, IDetectionService detectionService) : ICapabilityService
+public class CapabilityService(ICapabilityRegistry capabilityRegistry, IDetectionService detectionService) : ICapabilityService
 {
-    public bool HasCapability(string capabilityName)
+    public bool HasCapability<TCapability>()
     {
-        if (!capabilityRegistry.TryGetCapability(capabilityName, out var capability) ||
+        if (!capabilityRegistry.TryGetCapability<TCapability>(out var capability) ||
             capability is null)
         {
             return false;

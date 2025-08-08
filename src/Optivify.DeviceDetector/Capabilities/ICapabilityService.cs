@@ -2,5 +2,5 @@
 
 public interface ICapabilityService
 {
-    bool HasCapability(string capabilityName);
+    bool HasCapability<TCapability>();
 }

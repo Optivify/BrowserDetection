@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Optivify.DeviceDetector.Capabilities.Avif;
 
 namespace Optivify.DeviceDetector.Capabilities;
@@ -7,7 +8,7 @@ public static class DeviceDetectorBuilderExtensions
 {
     public static DeviceDetectorBuilder AddBrowserCapability<TCapability>(this DeviceDetectorBuilder builder) where TCapability : class, ICapability
     {
-        builder.Services.AddSingleton<ICapability, TCapability>();
+        builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ICapability, TCapability>());
 
         return builder;
     }
