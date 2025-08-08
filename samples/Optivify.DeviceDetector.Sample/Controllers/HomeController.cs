@@ -6,14 +6,9 @@ using Optivify.DeviceDetector.Services;
 
 namespace Optivify.DeviceDetector.Sample.Controllers;
 
-public class HomeController : Controller
+public class HomeController(IOptions<DeviceDetectorOptions> options) : Controller
 {
-    private readonly DeviceDetectorOptions _deviceDetectorOptions;
-
-    public HomeController(IOptions<DeviceDetectorOptions> options)
-    {
-        _deviceDetectorOptions = options.Value;
-    }
+    private readonly DeviceDetectorOptions _deviceDetectorOptions = options.Value;
 
     public IActionResult Index()
     {

@@ -9,8 +9,8 @@
 	<Description>An extensible tool that uses client hints and user agent for detecting browser, device types, platform, architecture and operating system.</Description>
 	<PackageTags>browser device platform engine detection detector</PackageTags>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
-	<PackageProjectUrl>https://github.com/Optivify/BrowserDetection</PackageProjectUrl>
-	<RepositoryUrl>https://github.com/Optivify/BrowserDetection</RepositoryUrl>
+	<PackageProjectUrl>https://github.com/Optivify/DeviceDetector</PackageProjectUrl>
+	<RepositoryUrl>https://github.com/Optivify/DeviceDetector</RepositoryUrl>
 	<AssemblyVersion>8.0.0</AssemblyVersion>
 	<Version>$(AssemblyVersion)</Version>
 	<Authors>Optivify</Authors>
